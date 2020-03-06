@@ -1,10 +1,10 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 
 buildscript {
+    
     repositories {
-        google() // Google's Maven Repository
+        google()
         jcenter()
-        
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.6.1'
@@ -16,8 +16,9 @@ buildscript {
 
 allprojects {
     repositories {
-        google() // Google's Maven repository
+        google()
         jcenter()
+        
     }
 }
 

@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "227052898576",
+    "firebase_url": "https://emotiontrackingapp-fb810.firebaseio.com",
+    "project_id": "emotiontrackingapp-fb810",
+    "storage_bucket": "emotiontrackingapp-fb810.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:227052898576:android:b5a482cdb6c4ec050c7d95",
+        "android_client_info": {
+          "package_name": "com.ublavins.emotion"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "227052898576-nhp43okl4qas5d7s8k3eta4g76lcm04h.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA_JMJng0HLmWkKWH41dZCQBR2zZo3cs_c"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "227052898576-nhp43okl4qas5d7s8k3eta4g76lcm04h.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
