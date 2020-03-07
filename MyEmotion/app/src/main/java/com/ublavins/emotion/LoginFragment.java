@@ -5,6 +5,9 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+
+import android.util.Log;
+import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,10 +17,10 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
-import java.util.concurrent.Executor;
 
 
 /**
@@ -31,6 +34,8 @@ public class LoginFragment extends Fragment {
     private Button registerButton;
     private EditText email;
     private EditText password;
+    private TextInputLayout emailInput;
+    private TextInputLayout passwordInput;
     private AuthCallback callback;
     private FirebaseAuth mAuth;
 
@@ -56,6 +61,8 @@ public class LoginFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_login, container, false);
         email = (EditText) view.findViewById(R.id.emailLogin);
         password = (EditText) view.findViewById(R.id.passwordLogin);
+        emailInput = (TextInputLayout) view.findViewById(R.id.emailInputLayout);
+        passwordInput = (TextInputLayout) view.findViewById(R.id.passwordInputLayout);
         loginButton = (Button) view.findViewById(R.id.loginButton);
         loginButton.setOnClickListener(
                 new View.OnClickListener() {
@@ -74,11 +81,9 @@ public class LoginFragment extends Fragment {
     }
 
     public void login() {
-        String emailText = email.getText().toString();
-        String passText = password.getText().toString();
-        if (emailText.equals("") && passText.equals("")) {
-            makeToast("Email or Password not filled in");
-        } else {
+        if (validateLogin()) {
+            String emailText = email.getText().toString();
+            String passText = password.getText().toString();
             mAuth.signInWithEmailAndPassword(emailText, passText)
                     .addOnCompleteListener(getActivity(), new OnCompleteListener<AuthResult>() {
                         @Override
@@ -96,7 +101,29 @@ public class LoginFragment extends Fragment {
         }
     }
 
-    private void makeToast(String message) {
-        Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
+    private boolean validateLogin() {
+        boolean isValid = true;
+        String emailText = email.getText().toString();
+        String passText = password.getText().toString();
+
+
+        if (emailText.isEmpty() || !Patterns.EMAIL_ADDRESS.matcher(emailText).matches()) {
+            emailInput.setError("Enter a valid email address");
+            isValid = false;
+        } else {
+            emailInput.setError(null);
+        }
+
+        if (passText.isEmpty()) {
+            passwordInput.setError("Enter a password");
+            isValid = false;
+        } else {
+            passwordInput.setError(null);
+        }
+        return isValid;
+    }
+
+    private void makeToast(String msg) {
+        Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
     }
 }
