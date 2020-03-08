@@ -11,6 +11,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.android.material.button.MaterialButton;
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -20,11 +24,9 @@ import android.widget.Toast;
 public class RegisterFragment extends Fragment {
 
     private AuthCallback callback;
-    private EditText fname;
-    private EditText lname;
-    private EditText email;
-    private EditText password;
-    private Button signUp;
+    private TextInputLayout fnameInput, lnameInput, emailInputLayout, passwordInput;
+    private TextInputEditText fname, lname, email, password;
+    private MaterialButton signUp;
 
     public RegisterFragment() {
         // Required empty public constructor
@@ -46,11 +48,11 @@ public class RegisterFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_register, container, false);
-        fname = (EditText)view.findViewById(R.id.fnameRegister);
-        lname = (EditText)view.findViewById(R.id.lnameRegister);
-        email = (EditText)view.findViewById(R.id.emailRegister);
-        password = (EditText)view.findViewById(R.id.passwordRegister);
-        signUp = (Button)view.findViewById(R.id.signUpButton);
+        fname = (TextInputEditText) view.findViewById(R.id.fnameRegister);
+        lname = (TextInputEditText) view.findViewById(R.id.lnameRegister);
+        email = (TextInputEditText)view.findViewById(R.id.emailRegister);
+        password = (TextInputEditText)view.findViewById(R.id.passwordRegister);
+//        signUp = (MaterialButton)view.findViewById(R.id.signUpButton);
 
         return view;
     }

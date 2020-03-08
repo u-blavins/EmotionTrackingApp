@@ -27,4 +27,9 @@ public class AuthActivity extends AppCompatActivity implements AuthCallback {
         RegisterFragment registerFrag = new RegisterFragment();
         getSupportFragmentManager().beginTransaction().replace(R.id.fragmentFrame, registerFrag).addToBackStack(null).commit();
     }
+
+    @Override
+    public void resetPassFragement() {
+
+    }
 }

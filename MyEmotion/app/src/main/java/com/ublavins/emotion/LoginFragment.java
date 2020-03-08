@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.AuthResult;
@@ -29,8 +30,8 @@ import com.google.firebase.auth.FirebaseAuth;
  */
 public class LoginFragment extends Fragment {
 
-    private Button loginButton;
-    private Button registerButton;
+    private MaterialButton loginButton;
+    private MaterialButton registerButton;
     private TextInputLayout emailInput;
     private TextInputLayout passwordInput;
     private AuthCallback callback;
@@ -61,14 +62,14 @@ public class LoginFragment extends Fragment {
         password = (TextInputEditText) view.findViewById(R.id.passwordLogin);
         emailInput = (TextInputLayout) view.findViewById(R.id.emailInputLayout);
         passwordInput = (TextInputLayout) view.findViewById(R.id.passwordInputLayout);
-        loginButton = (Button) view.findViewById(R.id.loginButton);
+        loginButton = (MaterialButton) view.findViewById(R.id.loginButton);
         loginButton.setOnClickListener(
                 new View.OnClickListener() {
                     public void onClick (View v) {
                         login(); }
                     }
                 );
-        registerButton = (Button) view.findViewById(R.id.registerButton);
+        registerButton = (MaterialButton) view.findViewById(R.id.registerButton);
         registerButton.setOnClickListener(
                 new View.OnClickListener() {
                     public void onClick (View v) {
