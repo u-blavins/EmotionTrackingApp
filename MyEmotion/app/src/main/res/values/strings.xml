@@ -5,4 +5,11 @@
     <string name="sign_up_button">Do not have an account? <u>Sign up</u></string>
     <string name="forget_pass">Forgot your password?</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="select_gender">Select a gender: </string>
+    <string-array name="genders">
+        <item>Select a gender: </item>
+        <item>Male</item>
+        <item>Female</item>
+        <item>Other</item>
+    </string-array>
 </resources>

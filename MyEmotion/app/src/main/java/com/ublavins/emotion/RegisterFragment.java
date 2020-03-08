@@ -1,5 +1,6 @@
 package com.ublavins.emotion;
 
+import android.app.DatePickerDialog;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -8,12 +9,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 
 /**
@@ -24,8 +30,9 @@ import com.google.android.material.textfield.TextInputLayout;
 public class RegisterFragment extends Fragment {
 
     private AuthCallback callback;
-    private TextInputLayout fnameInput, lnameInput, emailInputLayout, passwordInput;
-    private TextInputEditText fname, lname, email, password;
+    private TextInputLayout fnameInput, lnameInput, emailInputLayout, passwordInput,
+        dateLayout;
+    private TextInputEditText fname, lname, email, password, date;
     private MaterialButton signUp;
 
     public RegisterFragment() {
@@ -52,6 +59,16 @@ public class RegisterFragment extends Fragment {
         lname = (TextInputEditText) view.findViewById(R.id.lnameRegister);
         email = (TextInputEditText)view.findViewById(R.id.emailRegister);
         password = (TextInputEditText)view.findViewById(R.id.passwordRegister);
+        date = (TextInputEditText)view.findViewById(R.id.dobRegister);
+
+        date.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        getBirthDate();
+                    }
+                }
+        );
 //        signUp = (MaterialButton)view.findViewById(R.id.signUpButton);
 
         return view;
@@ -63,7 +80,23 @@ public class RegisterFragment extends Fragment {
         }
     }
 
-    public boolean validateRegister() {
+    private void getBirthDate() {
+        final Calendar calendar = Calendar.getInstance();
+        final int birthYear = calendar.get(Calendar.YEAR);
+        final int birthMonth = calendar.get(Calendar.MONTH);
+        final int birthDay = calendar.get(Calendar.DAY_OF_MONTH);
+
+        DatePickerDialog datePicker = new DatePickerDialog(getContext(),
+                new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker datePicker, int year, int month, int day) {
+                        date.setText(day + "/" + (month + 1) + "/" + year);
+                    }
+                }, birthYear, birthMonth, birthDay);
+        datePicker.show();
+    }
+
+    private boolean validateRegister() {
         boolean isValid = true;
         String fnameText = fname.getText().toString();
         String lnameText = lname.getText().toString();
