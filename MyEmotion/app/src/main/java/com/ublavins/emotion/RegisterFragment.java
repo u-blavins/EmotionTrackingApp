@@ -1,6 +1,7 @@
 package com.ublavins.emotion;
 
 import android.app.DatePickerDialog;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -13,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -49,6 +51,7 @@ public class RegisterFragment extends Fragment {
         dateInput;
     private TextInputEditText fname, lname, email, password, date;
     private MaterialButton signUp;
+    private CheckBox tos;
     private static final String[] GENDERS = {"Male", "Female", "Other"};
     private MaterialSpinner gender;
     private FirebaseAuth mAuth;
@@ -79,6 +82,7 @@ public class RegisterFragment extends Fragment {
         emailInput = (TextInputLayout)view.findViewById(R.id.emailInputLayout);
         passwordInput = (TextInputLayout)view.findViewById(R.id.passwordInputLayout);
         dateInput = (TextInputLayout)view.findViewById(R.id.dobInputLayout);
+        tos = (CheckBox)view.findViewById(R.id.tosCheck);
         fname = (TextInputEditText)view.findViewById(R.id.fnameRegister);
         lname = (TextInputEditText)view.findViewById(R.id.lnameRegister);
         email = (TextInputEditText)view.findViewById(R.id.emailRegister);
@@ -132,7 +136,14 @@ public class RegisterFragment extends Fragment {
                                         .set(user).addOnCompleteListener(new OnCompleteListener<Void>() {
                                     @Override
                                     public void onComplete(@NonNull Task<Void> task) {
-                                        makeToast("Account created");
+                                        if (task.isSuccessful()) {
+                                            Intent intent = new Intent(getActivity(), MainActivity.class);
+                                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                            startActivity(intent);
+                                        } else {
+                                            makeToast("Error creating account");
+                                        }
+
                                     }
                                 });
                             } else {
@@ -208,6 +219,11 @@ public class RegisterFragment extends Fragment {
             gender.setError(null);
         } catch (NullPointerException ex) {
             gender.setError("Select a gender");
+        }
+
+        if (!tos.isChecked()) {
+            isValid = false;
+            makeToast("Check terms of services");
         }
 
         return isValid;
