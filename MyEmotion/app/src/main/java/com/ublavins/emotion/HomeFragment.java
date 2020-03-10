@@ -8,13 +8,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link HomeFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+
 public class HomeFragment extends Fragment {
+
+    private FloatingActionButton addEntry;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -35,6 +34,20 @@ public class HomeFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_home, container, false);
+
+        addEntry = (FloatingActionButton)view.findViewById(R.id.addEntryFloatingButton);
+
+        addEntry.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        AddEntryFragment addEntryFrag = new AddEntryFragment();
+                        getFragmentManager().beginTransaction().replace(R.id.mainFragmentFrame,
+                                addEntryFrag).addToBackStack(null).commit();
+                    }
+                }
+        );
+
         return view;
     }
 }

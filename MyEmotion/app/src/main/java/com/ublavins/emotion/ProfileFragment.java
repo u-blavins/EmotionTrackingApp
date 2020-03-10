@@ -4,10 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
-import androidx.collection.ArrayMap;
 import androidx.fragment.app.Fragment;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,11 +21,6 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-import java.util.Map;
-
-import static androidx.constraintlayout.widget.Constraints.TAG;
-
-
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link ProfileFragment#newInstance} factory method to
@@ -36,18 +29,17 @@ import static androidx.constraintlayout.widget.Constraints.TAG;
 public class ProfileFragment extends Fragment {
 
     private MaterialButton logout;
+    private TextInputLayout fnameLayout;
+    private TextInputEditText fname, lname, email, dob, gender;
     private FirebaseAuth mAuth;
     private FirebaseUser mUser;
     private FirebaseFirestore db;
-    private TextInputLayout fnameLayout;
-    private TextInputEditText fname, lname, email, dob, gender;
-    private Map<String, Object> user;
 
     public ProfileFragment() {
         // Required empty public constructor
     }
 
-    public static ProfileFragment newInstance() {
+    public static ProfileFragment newInstance(DocumentSnapshot snap) {
         ProfileFragment fragment = new ProfileFragment();
         return fragment;
     }
@@ -66,12 +58,15 @@ public class ProfileFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
+
         fname = (TextInputEditText)view.findViewById(R.id.fnameText);
         lname = (TextInputEditText)view.findViewById(R.id.lnameText);
         email = (TextInputEditText)view.findViewById(R.id.emailText);
         dob = (TextInputEditText)view.findViewById(R.id.dobText);
+        gender = (TextInputEditText)view.findViewById(R.id.genderText);
+        logout = (MaterialButton)view.findViewById(R.id.logoutButton);
 
-        DocumentReference docRef = db.collection("Users").document(mUser.getUid());
+        final DocumentReference docRef = db.collection("Users").document(mUser.getUid());
         docRef.get().addOnCompleteListener(
                 new OnCompleteListener<DocumentSnapshot>() {
                     @Override
@@ -83,13 +78,12 @@ public class ProfileFragment extends Fragment {
                                 lname.setText(docSnap.get("LastName").toString());
                                 email.setText(docSnap.get("Email").toString());
                                 dob.setText(docSnap.get("Dob").toString());
+                                gender.setText(docSnap.get("Gender").toString());
                             }
                         }
                     }
                 }
         );
-
-        logout = (MaterialButton)view.findViewById(R.id.logoutButton);
 
         logout.setOnClickListener(
                 new View.OnClickListener() {
@@ -99,6 +93,7 @@ public class ProfileFragment extends Fragment {
                     }
                 }
         );
+
         return view;
     }
 
@@ -109,4 +104,5 @@ public class ProfileFragment extends Fragment {
         startActivity(intent);
         getActivity().finish();
     }
+
 }

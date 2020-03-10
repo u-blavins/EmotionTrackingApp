@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".AddEntryFragment">
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/neutralImage"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="76dp"
+        app:layout_constraintEnd_toStartOf="@+id/sadImage"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/okayImage"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_neutral" />
+
+    <TextView
+        android:id="@+id/okayText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="Okay"
+        app:layout_constraintEnd_toEndOf="@+id/okayImage"
+        app:layout_constraintStart_toStartOf="@+id/okayImage"
+        app:layout_constraintTop_toBottomOf="@+id/okayImage" />
+
+    <TextView
+        android:id="@+id/neutralText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="Neutral"
+        app:layout_constraintEnd_toEndOf="@+id/neutralImage"
+        app:layout_constraintStart_toStartOf="@+id/neutralImage"
+        app:layout_constraintTop_toBottomOf="@+id/neutralImage" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/okayImage"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="76dp"
+        app:layout_constraintEnd_toStartOf="@+id/neutralImage"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/happyImage"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_okay" />
+
+    <TextView
+        android:id="@+id/happyText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="Happy"
+        app:layout_constraintEnd_toEndOf="@+id/happyImage"
+        app:layout_constraintStart_toStartOf="@+id/happyImage"
+        app:layout_constraintTop_toBottomOf="@+id/happyImage" />
+
+    <TextView
+        android:id="@+id/angryText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="Angry"
+        app:layout_constraintEnd_toEndOf="@+id/angryImage"
+        app:layout_constraintStart_toStartOf="@+id/angryImage"
+        app:layout_constraintTop_toBottomOf="@+id/angryImage" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/angryImage"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="76dp"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/sadImage"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_angry" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/happyImage"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="76dp"
+        app:layout_constraintEnd_toStartOf="@+id/okayImage"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_happy" />
+
+    <TextView
+        android:id="@+id/sadText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="Sad"
+        app:layout_constraintEnd_toEndOf="@+id/sadImage"
+        app:layout_constraintStart_toStartOf="@+id/sadImage"
+        app:layout_constraintTop_toBottomOf="@+id/sadImage" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/sadImage"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="76dp"
+        app:layout_constraintEnd_toStartOf="@+id/angryImage"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/neutralImage"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_sad" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -16,6 +16,7 @@ public class MainActivity extends AppCompatActivity implements MainCallback {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         bottomNavBar = (BottomNavigationView)findViewById(R.id.mainNavBar);
 
         homeFragment();
@@ -61,4 +62,5 @@ public class MainActivity extends AppCompatActivity implements MainCallback {
         getSupportFragmentManager().beginTransaction().replace(R.id.mainFragmentFrame, profileFrag)
                 .addToBackStack(null).commit();
     }
+
 }
