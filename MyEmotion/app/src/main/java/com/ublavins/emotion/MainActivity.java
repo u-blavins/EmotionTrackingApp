@@ -18,13 +18,15 @@ public class MainActivity extends AppCompatActivity implements MainCallback {
         setContentView(R.layout.activity_main);
         bottomNavBar = (BottomNavigationView)findViewById(R.id.mainNavBar);
 
+        homeFragment();
+
         bottomNavBar.setOnNavigationItemSelectedListener(
                 new BottomNavigationView.OnNavigationItemSelectedListener() {
                     @Override
                     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
                         switch (menuItem.getItemId()) {
                             case R.id.nav_home:
-                                mainFragment();
+                                homeFragment();
                                 break;
                             case R.id.nav_charts:
                                 chartFragment();
@@ -40,7 +42,7 @@ public class MainActivity extends AppCompatActivity implements MainCallback {
     }
 
     @Override
-    public void mainFragment() {
+    public void homeFragment() {
         HomeFragment homeFrag = new HomeFragment();
         getSupportFragmentManager().beginTransaction().replace(R.id.mainFragmentFrame, homeFrag)
                 .addToBackStack(null).commit();

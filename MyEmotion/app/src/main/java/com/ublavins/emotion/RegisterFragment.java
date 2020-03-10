@@ -60,7 +60,7 @@ public class RegisterFragment extends Fragment {
         // Required empty public constructor
     }
 
-    public static RegisterFragment newInstance(String param1, String param2) {
+    public static RegisterFragment newInstance() {
         RegisterFragment fragment = new RegisterFragment();
         return fragment;
     }
@@ -140,6 +140,7 @@ public class RegisterFragment extends Fragment {
                                             Intent intent = new Intent(getActivity(), MainActivity.class);
                                             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                             startActivity(intent);
+                                            getActivity().finish();
                                         } else {
                                             makeToast("Error creating account");
                                         }

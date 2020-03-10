@@ -91,6 +91,7 @@ public class LoginFragment extends Fragment {
                                 Intent intent =  new Intent(getActivity(), MainActivity.class);
                                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                 startActivity(intent);
+                                getActivity().finish();
                             } else {
                                 makeToast("User does not exist");
                             }

@@ -6,4 +6,5 @@
     <string name="forget_pass">Forgot your password?</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="tos">I hereby accept to the <u><b>terms and condition</b></u></string>
+    <string name="logout">Logout</string>
 </resources>

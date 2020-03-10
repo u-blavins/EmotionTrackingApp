@@ -1,7 +1,7 @@
 package com.ublavins.emotion;
 
 public interface MainCallback {
-    void mainFragment();
+    void homeFragment();
     void chartFragment();
     void profileFragment();
 }
