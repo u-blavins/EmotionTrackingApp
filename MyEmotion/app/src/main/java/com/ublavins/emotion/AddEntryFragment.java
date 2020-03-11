@@ -50,7 +50,6 @@ public class AddEntryFragment extends Fragment implements OnMapReadyCallback {
         View view = inflater.inflate(R.layout.fragment_add_entry, container, false);
 
         searchView = (SearchView)view.findViewById(R.id.mapSearch);
-        searchView.setQueryHint("Search Location");
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
