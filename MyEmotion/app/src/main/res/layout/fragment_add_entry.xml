@@ -10,7 +10,7 @@
         android:id="@+id/neutralImage"
         android:layout_width="60dp"
         android:layout_height="60dp"
-        android:layout_marginTop="76dp"
+        android:layout_marginTop="32dp"
         app:layout_constraintEnd_toStartOf="@+id/sadImage"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/okayImage"
@@ -21,7 +21,8 @@
         android:id="@+id/okayText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="20dp"
+        android:textSize="20sp"
         android:text="Okay"
         app:layout_constraintEnd_toEndOf="@+id/okayImage"
         app:layout_constraintStart_toStartOf="@+id/okayImage"
@@ -31,7 +32,8 @@
         android:id="@+id/neutralText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="20dp"
+        android:textSize="20sp"
         android:text="Neutral"
         app:layout_constraintEnd_toEndOf="@+id/neutralImage"
         app:layout_constraintStart_toStartOf="@+id/neutralImage"
@@ -41,7 +43,7 @@
         android:id="@+id/okayImage"
         android:layout_width="60dp"
         android:layout_height="60dp"
-        android:layout_marginTop="76dp"
+        android:layout_marginTop="32dp"
         app:layout_constraintEnd_toStartOf="@+id/neutralImage"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/happyImage"
@@ -52,7 +54,8 @@
         android:id="@+id/happyText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="20dp"
+        android:textSize="20sp"
         android:text="Happy"
         app:layout_constraintEnd_toEndOf="@+id/happyImage"
         app:layout_constraintStart_toStartOf="@+id/happyImage"
@@ -62,7 +65,8 @@
         android:id="@+id/angryText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="20dp"
+        android:textSize="20sp"
         android:text="Angry"
         app:layout_constraintEnd_toEndOf="@+id/angryImage"
         app:layout_constraintStart_toStartOf="@+id/angryImage"
@@ -72,7 +76,7 @@
         android:id="@+id/angryImage"
         android:layout_width="60dp"
         android:layout_height="60dp"
-        android:layout_marginTop="76dp"
+        android:layout_marginTop="32dp"
         android:layout_marginEnd="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -85,7 +89,7 @@
         android:layout_width="60dp"
         android:layout_height="60dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="76dp"
+        android:layout_marginTop="32dp"
         app:layout_constraintEnd_toStartOf="@+id/okayImage"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
@@ -96,7 +100,8 @@
         android:id="@+id/sadText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="20dp"
+        android:textSize="20sp"
         android:text="Sad"
         app:layout_constraintEnd_toEndOf="@+id/sadImage"
         app:layout_constraintStart_toStartOf="@+id/sadImage"
@@ -106,12 +111,116 @@
         android:id="@+id/sadImage"
         android:layout_width="60dp"
         android:layout_height="60dp"
-        android:layout_marginTop="76dp"
+        android:layout_marginTop="32dp"
         app:layout_constraintEnd_toStartOf="@+id/angryImage"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/neutralImage"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_sad" />
 
+    <CheckBox
+        android:id="@+id/happyCheck"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:buttonTint="@color/colorPrimary"
+        android:scaleX="1.40"
+        android:scaleY="1.40"
+        app:layout_constraintEnd_toEndOf="@+id/happyText"
+        app:layout_constraintStart_toStartOf="@+id/happyText"
+        app:layout_constraintTop_toBottomOf="@+id/happyText" />
+
+    <CheckBox
+        android:id="@+id/okayCheck"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:buttonTint="@color/colorPrimary"
+        android:scaleX="1.40"
+        android:scaleY="1.40"
+        app:layout_constraintEnd_toEndOf="@+id/okayText"
+        app:layout_constraintStart_toStartOf="@+id/okayText"
+        app:layout_constraintTop_toBottomOf="@+id/okayText" />
+
+    <CheckBox
+        android:id="@+id/neutralCheck"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:buttonTint="@color/colorPrimary"
+        android:scaleX="1.40"
+        android:scaleY="1.40"
+        app:layout_constraintEnd_toEndOf="@+id/neutralText"
+        app:layout_constraintStart_toStartOf="@+id/neutralText"
+        app:layout_constraintTop_toBottomOf="@+id/neutralText" />
+
+    <CheckBox
+        android:id="@+id/sadCheck"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:buttonTint="@color/colorPrimary"
+        android:scaleX="1.40"
+        android:scaleY="1.40"
+        app:layout_constraintEnd_toEndOf="@+id/sadText"
+        app:layout_constraintStart_toStartOf="@+id/sadText"
+        app:layout_constraintTop_toBottomOf="@+id/sadText" />
+
+    <CheckBox
+        android:id="@+id/angryCheck"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:buttonTint="@color/colorPrimary"
+        android:scaleX="1.40"
+        android:scaleY="1.40"
+        app:layout_constraintEnd_toEndOf="@+id/angryText"
+        app:layout_constraintStart_toStartOf="@+id/angryText"
+        app:layout_constraintTop_toBottomOf="@+id/angryText" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textInputLayout"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="25dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="25dp"
+        android:hint="Thoughts"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/neutralCheck"
+        app:layout_constraintVertical_bias="0.0">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="114dp"
+            android:gravity="left" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <SearchView
+        android:id="@+id/mapSearch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:iconifiedByDefault="false"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textInputLayout" />
+
+    <com.google.android.gms.maps.MapView
+        android:id="@+id/mapView"
+        android:layout_width="353dp"
+        android:layout_height="200dp"
+        android:layout_marginStart="25dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="25dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textInputLayout"
+        app:layout_constraintVertical_bias="0.39" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

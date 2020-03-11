@@ -3,23 +3,17 @@ package com.ublavins.emotion;
 import android.content.Intent;
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FirebaseFirestore;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -29,18 +23,17 @@ import com.google.firebase.firestore.FirebaseFirestore;
 public class ProfileFragment extends Fragment {
 
     private MaterialButton logout;
-    private TextInputLayout fnameLayout;
     private TextInputEditText fname, lname, email, dob, gender;
     private FirebaseAuth mAuth;
-    private FirebaseUser mUser;
-    private FirebaseFirestore db;
+    private DocumentSnapshot docSnap;
 
-    public ProfileFragment() {
+    public ProfileFragment(DocumentSnapshot snap) {
         // Required empty public constructor
+        docSnap = snap;
     }
 
     public static ProfileFragment newInstance(DocumentSnapshot snap) {
-        ProfileFragment fragment = new ProfileFragment();
+        ProfileFragment fragment = new ProfileFragment(snap);
         return fragment;
     }
 
@@ -48,8 +41,6 @@ public class ProfileFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mAuth = FirebaseAuth.getInstance();
-        mUser = mAuth.getCurrentUser();
-        db = FirebaseFirestore.getInstance();
     }
 
     // Will need to think of caching firebase store
@@ -66,24 +57,11 @@ public class ProfileFragment extends Fragment {
         gender = (TextInputEditText)view.findViewById(R.id.genderText);
         logout = (MaterialButton)view.findViewById(R.id.logoutButton);
 
-        final DocumentReference docRef = db.collection("Users").document(mUser.getUid());
-        docRef.get().addOnCompleteListener(
-                new OnCompleteListener<DocumentSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                        if (task.isSuccessful()) {
-                            DocumentSnapshot docSnap = task.getResult();
-                            if (docSnap.exists()) {
-                                fname.setText(docSnap.get("FirstName").toString());
-                                lname.setText(docSnap.get("LastName").toString());
-                                email.setText(docSnap.get("Email").toString());
-                                dob.setText(docSnap.get("Dob").toString());
-                                gender.setText(docSnap.get("Gender").toString());
-                            }
-                        }
-                    }
-                }
-        );
+        fname.setText(docSnap.get("FirstName").toString());
+        lname.setText(docSnap.get("LastName").toString());
+        email.setText(docSnap.get("Email").toString());
+        dob.setText(docSnap.get("Dob").toString());
+        gender.setText(docSnap.get("Gender").toString());
 
         logout.setOnClickListener(
                 new View.OnClickListener() {

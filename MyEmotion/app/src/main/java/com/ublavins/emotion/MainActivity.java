@@ -6,11 +6,23 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 public class MainActivity extends AppCompatActivity implements MainCallback {
 
     private BottomNavigationView bottomNavBar;
+
+    private FirebaseAuth mAuth;
+    private FirebaseUser mUser;
+    private FirebaseFirestore db;
+    private DocumentSnapshot snap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -18,6 +30,25 @@ public class MainActivity extends AppCompatActivity implements MainCallback {
         setContentView(R.layout.activity_main);
 
         bottomNavBar = (BottomNavigationView)findViewById(R.id.mainNavBar);
+
+        mAuth = FirebaseAuth.getInstance();
+        mUser = mAuth.getCurrentUser();
+        db = FirebaseFirestore.getInstance();
+
+        final DocumentReference docRef = db.collection("Users").document(mUser.getUid());
+        docRef.get().addOnCompleteListener(
+                new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            DocumentSnapshot docSnap = task.getResult();
+                            if (docSnap.exists()) {
+                                snap = docSnap;
+                            }
+                        }
+                    }
+                }
+        );
 
         homeFragment();
 
@@ -58,7 +89,7 @@ public class MainActivity extends AppCompatActivity implements MainCallback {
 
     @Override
     public void profileFragment() {
-        ProfileFragment profileFrag = new ProfileFragment();
+        ProfileFragment profileFrag = new ProfileFragment(snap);
         getSupportFragmentManager().beginTransaction().replace(R.id.mainFragmentFrame, profileFrag)
                 .addToBackStack(null).commit();
     }
