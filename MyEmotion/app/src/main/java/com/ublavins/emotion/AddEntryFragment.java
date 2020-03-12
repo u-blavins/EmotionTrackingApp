@@ -5,6 +5,7 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import android.util.ArrayMap;
@@ -27,10 +28,16 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.io.IOException;
 import java.util.List;
@@ -55,6 +62,8 @@ public class AddEntryFragment extends Fragment implements OnMapReadyCallback {
     private TextInputEditText thoughtsText;
     private String emotion = "";
     private CheckBox happyCheck, okayCheck, neutralCheck, sadCheck, angryCheck;
+    private FirebaseFirestore db;
+    private FirebaseUser mUser;
 
     public AddEntryFragment() {
         // Required empty public constructor
@@ -68,6 +77,8 @@ public class AddEntryFragment extends Fragment implements OnMapReadyCallback {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mUser = FirebaseAuth.getInstance().getCurrentUser();
+        db = FirebaseFirestore.getInstance();
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(getContext());
     }
 
@@ -179,6 +190,22 @@ public class AddEntryFragment extends Fragment implements OnMapReadyCallback {
             entry.put("Thoughts", thoughts);
             entry.put("Lat", lat);
             entry.put("Lon", lon);
+
+            db.collection("Entries")
+                    .document(mUser.getUid()).collection("entry")
+                    .add(entry).addOnCompleteListener(
+                    new OnCompleteListener<DocumentReference>() {
+                        @Override
+                        public void onComplete(@NonNull Task<DocumentReference> task) {
+                            if (task.isSuccessful()) {
+                                makeToast("Added entry to diary");
+                                getFragmentManager().popBackStack();
+                            } else {
+                                makeToast("Request unsuccessful");
+                            }
+                        }
+                    }
+            );
 
         } else {
             makeToast("Please select an emotion");
