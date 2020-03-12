@@ -1,21 +1,37 @@
 package com.ublavins.emotion;
 
+import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
+import android.location.Location;
 import android.os.Bundle;
 
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.SearchView;
 
 
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.button.MaterialButton;
+
+import java.io.IOException;
+import java.util.List;
 
 
 /**
@@ -26,8 +42,11 @@ import com.google.android.gms.maps.model.MarkerOptions;
 public class AddEntryFragment extends Fragment implements OnMapReadyCallback {
 
     private MapView mapView;
-    private GoogleMap map;
+    private GoogleMap googleMap;
+    private Marker marker;
     private SearchView searchView;
+    private ImageButton currLocationButton;
+    private FusedLocationProviderClient fusedLocationClient;
 
     public AddEntryFragment() {
         // Required empty public constructor
@@ -41,6 +60,7 @@ public class AddEntryFragment extends Fragment implements OnMapReadyCallback {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(getContext());
     }
 
     @Override
@@ -50,11 +70,32 @@ public class AddEntryFragment extends Fragment implements OnMapReadyCallback {
         View view = inflater.inflate(R.layout.fragment_add_entry, container, false);
 
         searchView = (SearchView)view.findViewById(R.id.mapSearch);
+        currLocationButton = (ImageButton)view.findViewById(R.id.currLocationButton);
+        mapView = (MapView)view.findViewById(R.id.mapView);
+        mapView.onCreate(savedInstanceState);
+        mapView.onResume();
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String s) {
-                return false;
+                String location = searchView.getQuery().toString();
+                List<Address> addresses = null;
+
+                if (location != null && !location.isEmpty()) {
+                    Geocoder geocoder = new Geocoder(getActivity());
+                    try {
+                        addresses = geocoder.getFromLocationName(location, 1);
+                    } catch (IOException ex) {
+                        Log.d("Location", ex.toString());
+                    }
+                    Address address = addresses.get(0);
+                    LatLng latLng = new LatLng(address.getLatitude(), address.getLongitude());
+                    setMarker(new MarkerOptions().position(latLng).title(location));
+                    googleMap.animateCamera(CameraUpdateFactory
+                            .newLatLngZoom(latLng, 18));
+                }
+
+                return true;
             }
 
             @Override
@@ -63,16 +104,45 @@ public class AddEntryFragment extends Fragment implements OnMapReadyCallback {
             }
         });
 
-        mapView = (MapView)view.findViewById(R.id.mapView);
-        mapView.onCreate(savedInstanceState);
-        mapView.onResume();
+        currLocationButton.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        fusedLocationClient.getLastLocation()
+                                .addOnSuccessListener(new OnSuccessListener<Location>() {
+                                    @Override
+                                    public void onSuccess(Location location) {
+                                        // Got last known location. In some rare situations this can be null.
+                                        if (location != null) {
+                                            LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
+                                            setMarker(new MarkerOptions().position(latLng).title("Current Location"));
+                                            googleMap.animateCamera(CameraUpdateFactory
+                                                    .newLatLngZoom(latLng, 18));
+                                        }
+                                    }
+                                });
+                    }
+                }
+        );
+
         mapView.getMapAsync(this);
         return view;
     }
 
     @Override
-    public void onMapReady(GoogleMap googleMap) {
-        googleMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(-33.852, 151.211)));
+    public void onMapReady(GoogleMap gMap) {
+        googleMap = gMap;
+        googleMap.setMyLocationEnabled(true);
+        googleMap.getUiSettings().setMyLocationButtonEnabled(true);
+    }
+
+    private void setMarker(MarkerOptions markerOptions) {
+        if (marker != null) {
+            marker.remove();
+            marker = googleMap.addMarker(markerOptions);
+        } else {
+            marker = googleMap.addMarker(markerOptions);
+        }
     }
 
 }
