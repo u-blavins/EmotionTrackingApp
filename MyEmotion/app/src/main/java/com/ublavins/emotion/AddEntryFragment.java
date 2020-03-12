@@ -1,21 +1,21 @@
 package com.ublavins.emotion;
 
-import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.os.Bundle;
 
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
+import android.util.ArrayMap;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.ImageButton;
 import android.widget.SearchView;
+import android.widget.Toast;
 
 
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -29,9 +29,12 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -47,6 +50,11 @@ public class AddEntryFragment extends Fragment implements OnMapReadyCallback {
     private SearchView searchView;
     private ImageButton currLocationButton;
     private FusedLocationProviderClient fusedLocationClient;
+    private MaterialButton addEntryButton;
+    private TextInputLayout thoughtsLayout;
+    private TextInputEditText thoughtsText;
+    private String emotion = "";
+    private CheckBox happyCheck, okayCheck, neutralCheck, sadCheck, angryCheck;
 
     public AddEntryFragment() {
         // Required empty public constructor
@@ -71,6 +79,14 @@ public class AddEntryFragment extends Fragment implements OnMapReadyCallback {
 
         searchView = (SearchView)view.findViewById(R.id.mapSearch);
         currLocationButton = (ImageButton)view.findViewById(R.id.currLocationButton);
+        addEntryButton = (MaterialButton)view.findViewById(R.id.addEntryButton);
+        happyCheck = (CheckBox)view.findViewById(R.id.happyCheck);
+        okayCheck = (CheckBox)view.findViewById(R.id.okayCheck);
+        neutralCheck = (CheckBox)view.findViewById(R.id.neutralCheck);
+        sadCheck = (CheckBox)view.findViewById(R.id.sadCheck);
+        angryCheck = (CheckBox)view.findViewById(R.id.angryCheck);
+        thoughtsLayout = (TextInputLayout)view.findViewById(R.id.thoughtsLayout);
+        thoughtsText = (TextInputEditText)view.findViewById(R.id.thoughtsText);
         mapView = (MapView)view.findViewById(R.id.mapView);
         mapView.onCreate(savedInstanceState);
         mapView.onResume();
@@ -125,6 +141,15 @@ public class AddEntryFragment extends Fragment implements OnMapReadyCallback {
                 }
         );
 
+        addEntryButton.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        addEntry();
+                    }
+                }
+        );
+
         mapView.getMapAsync(this);
         return view;
     }
@@ -136,6 +161,44 @@ public class AddEntryFragment extends Fragment implements OnMapReadyCallback {
         googleMap.getUiSettings().setMyLocationButtonEnabled(true);
     }
 
+    private void addEntry() {
+        if (validateEntry()) {
+            String thoughts = thoughtsText.getText().toString();
+            String lat = "";
+            String lon = "";
+            LatLng latLng;
+            Map<String, Object> entry = new ArrayMap<String, Object>();
+
+            if (marker != null) {
+                latLng = marker.getPosition();
+                lat = String.valueOf(latLng.latitude);
+                lon = String.valueOf(latLng.longitude);
+            }
+
+            entry.put("Emotion", emotion);
+            entry.put("Thoughts", thoughts);
+            entry.put("Lat", lat);
+            entry.put("Lon", lon);
+
+        } else {
+            makeToast("Please select an emotion");
+        }
+    }
+
+    private boolean validateEntry() {
+        boolean isValid = true;
+
+        if (happyCheck.isChecked()) emotion = "Happy";
+        if (okayCheck.isChecked()) emotion = "Okay";
+        if (neutralCheck.isChecked()) emotion = "Neutral";
+        if (sadCheck.isChecked()) emotion = "Sad";
+        if (angryCheck.isChecked()) emotion = "Angry";
+
+        if (emotion.equals("")) isValid = false;
+
+        return isValid;
+    }
+
     private void setMarker(MarkerOptions markerOptions) {
         if (marker != null) {
             marker.remove();
@@ -143,6 +206,10 @@ public class AddEntryFragment extends Fragment implements OnMapReadyCallback {
         } else {
             marker = googleMap.addMarker(markerOptions);
         }
+    }
+
+    private void makeToast(String msg) {
+        Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
     }
 
 }
