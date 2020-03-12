@@ -3,8 +3,10 @@ package com.ublavins.emotion;
 import android.location.Location;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,8 +19,13 @@ import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 
 /**
@@ -31,6 +38,7 @@ public class MapChartFragment extends Fragment implements OnMapReadyCallback {
     private GoogleMap googleMap;
     private MapView mapView;
     private FusedLocationProviderClient fusedLocationClient;
+    private FirebaseFirestore db;
 
     public MapChartFragment() {
         // Required empty public constructor
@@ -45,6 +53,7 @@ public class MapChartFragment extends Fragment implements OnMapReadyCallback {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(getContext());
+        db = FirebaseFirestore.getInstance();
     }
 
     @Override
@@ -55,6 +64,24 @@ public class MapChartFragment extends Fragment implements OnMapReadyCallback {
         mapView = (MapView)view.findViewById(R.id.mapEmotions);
         mapView.onCreate(savedInstanceState);
         mapView.onResume();
+        db.collection("Entries").document(
+                FirebaseAuth.getInstance().getCurrentUser().getUid())
+                .collection("entry").get().addOnCompleteListener(
+                new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                setMarker(new MarkerOptions()
+                                .position(new LatLng(
+                                        Double.parseDouble(document.get("Lat").toString()),
+                                        Double.parseDouble(document.get("Lon").toString())
+                                )));
+                            }
+                        }
+                    }
+                }
+        );
         loadMap();
         mapView.getMapAsync(this);
         return view;
@@ -75,7 +102,7 @@ public class MapChartFragment extends Fragment implements OnMapReadyCallback {
                         if (location != null) {
                             LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
                             googleMap.animateCamera(CameraUpdateFactory
-                                    .newLatLngZoom(latLng, 10));
+                                    .newLatLngZoom(latLng, 8));
                         }
                     }
                 });
