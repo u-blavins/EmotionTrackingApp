@@ -40,6 +40,9 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.io.IOException;
+import java.text.DateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -174,9 +177,12 @@ public class AddEntryFragment extends Fragment implements OnMapReadyCallback {
 
     private void addEntry() {
         if (validateEntry()) {
+            Calendar now = Calendar.getInstance();
             String thoughts = thoughtsText.getText().toString();
             String lat = "";
             String lon = "";
+            String currentDate = DateFormat.getDateInstance(DateFormat.SHORT).format(now.getTime());
+            String currentTime = DateFormat.getTimeInstance(DateFormat.SHORT).format(now.getTime());
             LatLng latLng;
             Map<String, Object> entry = new ArrayMap<String, Object>();
 
@@ -190,6 +196,9 @@ public class AddEntryFragment extends Fragment implements OnMapReadyCallback {
             entry.put("Thoughts", thoughts);
             entry.put("Lat", lat);
             entry.put("Lon", lon);
+            entry.put("Date", currentDate);
+            entry.put("Time", currentTime);
+            entry.put("Timestamp", new Date().getTime() / 1000);
 
             db.collection("Entries")
                     .document(mUser.getUid()).collection("entry")

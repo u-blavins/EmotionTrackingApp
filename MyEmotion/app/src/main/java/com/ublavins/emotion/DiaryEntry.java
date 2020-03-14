@@ -6,13 +6,15 @@ public class DiaryEntry {
     private String entryDate;
     private String entryTime;
     private String entryThoughts;
+    private long entryTimestamp;
 
-    public DiaryEntry(String id, int icon, String date, String time, String thoughts) {
+    public DiaryEntry(String id, int icon, String date, String time, String thoughts, long timestamp) {
         entryId = id;
         entryEmojiIcon = icon;
         entryDate = date;
         entryTime = time;
         entryThoughts = thoughts;
+        entryTimestamp = timestamp;
     }
 
     public String getId() {
@@ -33,5 +35,9 @@ public class DiaryEntry {
 
     public String getThoughts() {
         return entryThoughts;
+    }
+
+    public long getTimestamp() {
+        return entryTimestamp;
     }
 }
