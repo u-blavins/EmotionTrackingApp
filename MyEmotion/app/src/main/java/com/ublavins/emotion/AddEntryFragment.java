@@ -90,7 +90,6 @@ public class AddEntryFragment extends Fragment implements OnMapReadyCallback {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_add_entry, container, false);
-
         searchView = (SearchView)view.findViewById(R.id.mapSearch);
         currLocationButton = (ImageButton)view.findViewById(R.id.currLocationButton);
         addEntryButton = (MaterialButton)view.findViewById(R.id.addEntryButton);
@@ -104,7 +103,6 @@ public class AddEntryFragment extends Fragment implements OnMapReadyCallback {
         mapView = (MapView)view.findViewById(R.id.mapView);
         mapView.onCreate(savedInstanceState);
         mapView.onResume();
-
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String s) {

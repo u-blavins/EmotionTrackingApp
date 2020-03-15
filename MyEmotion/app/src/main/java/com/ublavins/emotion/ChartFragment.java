@@ -72,6 +72,9 @@ public class ChartFragment extends Fragment {
     }
 
     private void graphFrame() {
+        GraphChartFragment graphChartFragment = new GraphChartFragment();
+        getFragmentManager().beginTransaction().replace(R.id.chartFragementFrame, graphChartFragment)
+                .addToBackStack(null).commit();
 
     }
 }

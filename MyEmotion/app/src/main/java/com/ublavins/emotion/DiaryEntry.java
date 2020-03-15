@@ -21,23 +21,47 @@ public class DiaryEntry {
         return entryId;
     }
 
+    public void setId(String id) {
+        entryId = id;
+    }
+
     public int getIcon() {
         return entryEmojiIcon;
+    }
+
+    public void setIcon(int icon) {
+        entryEmojiIcon = icon;
     }
 
     public String getDate() {
         return entryDate;
     }
 
+    public void setDate(String date) {
+        entryDate = date;
+    }
+
     public String getTime() {
         return entryTime;
+    }
+
+    public void setTime(String time) {
+        entryTime = time;
     }
 
     public String getThoughts() {
         return entryThoughts;
     }
 
+    public void setThoughts(String thoughts) {
+        entryThoughts = thoughts;
+    }
+
     public long getTimestamp() {
         return entryTimestamp;
+    }
+
+    public void setEntryTimestamp(long timestamp) {
+        entryTimestamp = timestamp;
     }
 }
