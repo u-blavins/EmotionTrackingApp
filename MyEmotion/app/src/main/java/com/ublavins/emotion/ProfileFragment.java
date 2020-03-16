@@ -50,12 +50,12 @@ public class ProfileFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
 
-        fname = (TextInputEditText)view.findViewById(R.id.fnameText);
-        lname = (TextInputEditText)view.findViewById(R.id.lnameText);
-        email = (TextInputEditText)view.findViewById(R.id.emailText);
-        dob = (TextInputEditText)view.findViewById(R.id.dobText);
-        gender = (TextInputEditText)view.findViewById(R.id.genderText);
-        logout = (MaterialButton)view.findViewById(R.id.logoutButton);
+        fname = view.findViewById(R.id.fnameText);
+        lname = view.findViewById(R.id.lnameText);
+        email = view.findViewById(R.id.emailText);
+        dob = view.findViewById(R.id.dobText);
+        gender = view.findViewById(R.id.genderText);
+        logout = view.findViewById(R.id.logoutButton);
 
         fname.setText(docSnap.get("FirstName").toString());
         lname.setText(docSnap.get("LastName").toString());

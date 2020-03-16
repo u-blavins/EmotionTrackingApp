@@ -54,7 +54,7 @@ public class HomeFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_home, container, false);
         final ArrayList<DiaryEntry> entryList = new ArrayList<>();
-        diaryRecyclerView = (RecyclerView)view.findViewById(R.id.diaryRecyclerView);
+        diaryRecyclerView = view.findViewById(R.id.diaryRecyclerView);
         diaryRecyclerView.setHasFixedSize(true);
         diaryLayoutManager = new LinearLayoutManager(getContext());
         diaryAdapter = new DiaryRecyclerAdapter(entryList);

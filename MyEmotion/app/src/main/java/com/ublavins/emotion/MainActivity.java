@@ -29,7 +29,7 @@ public class MainActivity extends AppCompatActivity implements MainCallback {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        bottomNavBar = (BottomNavigationView)findViewById(R.id.mainNavBar);
+        bottomNavBar = findViewById(R.id.mainNavBar);
 
         mAuth = FirebaseAuth.getInstance();
         mUser = mAuth.getCurrentUser();

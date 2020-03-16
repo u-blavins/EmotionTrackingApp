@@ -57,11 +57,11 @@ public class LoginFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_login, container, false);
-        email = (TextInputEditText) view.findViewById(R.id.emailLogin);
-        password = (TextInputEditText) view.findViewById(R.id.passwordLogin);
-        emailInput = (TextInputLayout) view.findViewById(R.id.emailInputLayout);
-        passwordInput = (TextInputLayout) view.findViewById(R.id.passwordInputLayout);
-        loginButton = (MaterialButton) view.findViewById(R.id.loginButton);
+        email = view.findViewById(R.id.emailLogin);
+        password = view.findViewById(R.id.passwordLogin);
+        emailInput = view.findViewById(R.id.emailInputLayout);
+        passwordInput = view.findViewById(R.id.passwordInputLayout);
+        loginButton = view.findViewById(R.id.loginButton);
         loginButton.setOnClickListener(
                 new View.OnClickListener() {
                     public void onClick (View v) {

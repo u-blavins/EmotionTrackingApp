@@ -1,7 +1,6 @@
 package com.ublavins.emotion;
 
 import android.Manifest;
-import android.content.RestrictionsManager;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -10,7 +9,6 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
@@ -71,7 +69,7 @@ public class MapChartFragment extends Fragment implements OnMapReadyCallback,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_map_chart, container, false);
-        mapView = (MapView)view.findViewById(R.id.mapEmotions);
+        mapView = view.findViewById(R.id.mapEmotions);
         mapView.onCreate(savedInstanceState);
         mapView.onResume();
         loadMap();
@@ -112,7 +110,7 @@ public class MapChartFragment extends Fragment implements OnMapReadyCallback,
 
     private void loadMap() {
         // Check ACCESS_FINE_LOCATION and ACCESS_COARSE_LOCATION permissions
-        // If not set request permissions
+        // If not set request permissions then request permissions
         if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED
                 && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION)

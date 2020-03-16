@@ -6,6 +6,8 @@ import android.location.Location;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import android.util.ArrayMap;
@@ -90,19 +92,20 @@ public class AddEntryFragment extends Fragment implements OnMapReadyCallback {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_add_entry, container, false);
-        searchView = (SearchView)view.findViewById(R.id.mapSearch);
-        currLocationButton = (ImageButton)view.findViewById(R.id.currLocationButton);
-        addEntryButton = (MaterialButton)view.findViewById(R.id.addEntryButton);
-        happyCheck = (CheckBox)view.findViewById(R.id.happyCheck);
-        okayCheck = (CheckBox)view.findViewById(R.id.okayCheck);
-        neutralCheck = (CheckBox)view.findViewById(R.id.neutralCheck);
-        sadCheck = (CheckBox)view.findViewById(R.id.sadCheck);
-        angryCheck = (CheckBox)view.findViewById(R.id.angryCheck);
-        thoughtsLayout = (TextInputLayout)view.findViewById(R.id.thoughtsLayout);
-        thoughtsText = (TextInputEditText)view.findViewById(R.id.thoughtsText);
-        mapView = (MapView)view.findViewById(R.id.mapView);
+        searchView = view.findViewById(R.id.mapSearch);
+        currLocationButton = view.findViewById(R.id.currLocationButton);
+        addEntryButton = view.findViewById(R.id.addEntryButton);
+        happyCheck = view.findViewById(R.id.happyCheck);
+        okayCheck = view.findViewById(R.id.okayCheck);
+        neutralCheck = view.findViewById(R.id.neutralCheck);
+        sadCheck = view.findViewById(R.id.sadCheck);
+        angryCheck = view.findViewById(R.id.angryCheck);
+        thoughtsLayout = view.findViewById(R.id.thoughtsLayout);
+        thoughtsText = view.findViewById(R.id.thoughtsText);
+        mapView = view.findViewById(R.id.mapView);
         mapView.onCreate(savedInstanceState);
         mapView.onResume();
+
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String s) {

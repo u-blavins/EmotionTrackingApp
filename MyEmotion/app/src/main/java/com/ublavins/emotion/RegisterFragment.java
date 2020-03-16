@@ -70,22 +70,22 @@ public class RegisterFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_register, container, false);
-        fnameInput = (TextInputLayout)view.findViewById(R.id.fnameInputLayout);
-        lnameInput = (TextInputLayout)view.findViewById(R.id.lnameInputLayout);
-        emailInput = (TextInputLayout)view.findViewById(R.id.emailInputLayout);
-        passwordInput = (TextInputLayout)view.findViewById(R.id.passwordInputLayout);
-        dateInput = (TextInputLayout)view.findViewById(R.id.dobInputLayout);
-        tos = (CheckBox)view.findViewById(R.id.tosCheck);
-        fname = (TextInputEditText)view.findViewById(R.id.fnameRegister);
-        lname = (TextInputEditText)view.findViewById(R.id.lnameRegister);
-        email = (TextInputEditText)view.findViewById(R.id.emailRegister);
-        password = (TextInputEditText)view.findViewById(R.id.passwordRegister);
-        date = (TextInputEditText)view.findViewById(R.id.dobRegister);
-        gender = (MaterialSpinner)view.findViewById(R.id.genderRegister);
+        fnameInput = view.findViewById(R.id.fnameInputLayout);
+        lnameInput = view.findViewById(R.id.lnameInputLayout);
+        emailInput = view.findViewById(R.id.emailInputLayout);
+        passwordInput = view.findViewById(R.id.passwordInputLayout);
+        dateInput = view.findViewById(R.id.dobInputLayout);
+        tos = view.findViewById(R.id.tosCheck);
+        fname = view.findViewById(R.id.fnameRegister);
+        lname = view.findViewById(R.id.lnameRegister);
+        email = view.findViewById(R.id.emailRegister);
+        password = view.findViewById(R.id.passwordRegister);
+        date = view.findViewById(R.id.dobRegister);
+        gender = view.findViewById(R.id.genderRegister);
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(),
                 android.R.layout.simple_dropdown_item_1line, GENDERS);
         gender.setAdapter(adapter);
-        signUp = (MaterialButton)view.findViewById(R.id.signUpButton);
+        signUp = view.findViewById(R.id.signUpButton);
 
 
         date.setOnClickListener(

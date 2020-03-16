@@ -73,13 +73,13 @@ public class GraphChartFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_graph_chart, container, false);
-        menuSpinner = (MaterialSpinner)view.findViewById(R.id.chartType);
+        menuSpinner = view.findViewById(R.id.chartType);
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(),
                 android.R.layout.simple_dropdown_item_1line, CHARTS);
         menuSpinner.setAdapter(adapter);
         menuSpinner.setSelection(0);
-        pieChart = (PieChart)view.findViewById(R.id.pieChart);
-        barChart = (BarChart)view.findViewById(R.id.barChart);
+        pieChart = view.findViewById(R.id.pieChart);
+        barChart = view.findViewById(R.id.barChart);
         loadPieChart();
         loadBarChart();
         db.collection("Entries").document(
