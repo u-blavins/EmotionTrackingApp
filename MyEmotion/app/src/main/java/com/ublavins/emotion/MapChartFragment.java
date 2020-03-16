@@ -1,11 +1,16 @@
 package com.ublavins.emotion;
 
+import android.Manifest;
+import android.content.RestrictionsManager;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.location.Location;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
@@ -36,8 +41,10 @@ import com.google.firebase.firestore.QuerySnapshot;
  * Use the {@link MapChartFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class MapChartFragment extends Fragment implements OnMapReadyCallback {
+public class MapChartFragment extends Fragment implements OnMapReadyCallback,
+        ActivityCompat.OnRequestPermissionsResultCallback {
 
+    private static final int REQUEST_LOCATION = 1;
     private GoogleMap googleMap;
     private MapView mapView;
     private FusedLocationProviderClient fusedLocationClient;
@@ -67,6 +74,8 @@ public class MapChartFragment extends Fragment implements OnMapReadyCallback {
         mapView = (MapView)view.findViewById(R.id.mapEmotions);
         mapView.onCreate(savedInstanceState);
         mapView.onResume();
+        loadMap();
+        mapView.getMapAsync(this);
         db.collection("Entries").document(
                 FirebaseAuth.getInstance().getCurrentUser().getUid())
                 .collection("entry").get().addOnCompleteListener(
@@ -85,19 +94,36 @@ public class MapChartFragment extends Fragment implements OnMapReadyCallback {
                     }
                 }
         );
-        loadMap();
-        mapView.getMapAsync(this);
         return view;
     }
 
     @Override
     public void onMapReady(GoogleMap gMap) {
         googleMap = gMap;
-        googleMap.setMyLocationEnabled(true);
+        // Check if ACCESS_FINE_LOCATION and ACCESS_COARSE_LOCATION permissions have been set
+        if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED) {
+            googleMap.setMyLocationEnabled(true);
+        }
         googleMap.getUiSettings().setMyLocationButtonEnabled(true);
     }
 
     private void loadMap() {
+        // Check ACCESS_FINE_LOCATION and ACCESS_COARSE_LOCATION permissions
+        // If not set request permissions
+        if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+
+            requestPermissions(new String[]{android.Manifest.permission.ACCESS_COARSE_LOCATION,
+                            android.Manifest.permission.ACCESS_FINE_LOCATION},
+                    REQUEST_LOCATION);
+
+            return;
+        }
         fusedLocationClient.getLastLocation()
                 .addOnSuccessListener(new OnSuccessListener<Location>() {
                     @Override
@@ -110,6 +136,22 @@ public class MapChartFragment extends Fragment implements OnMapReadyCallback {
                         }
                     }
                 });
+    }
+
+    @Override
+    public void onRequestPermissionsResult(
+            int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+
+        switch (requestCode) {
+            case REQUEST_LOCATION: {
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    loadMap();
+                }
+                return;
+            }
+
+        }
     }
 
     private MarkerOptions getMarker(String lat, String lon, String emotion) {
