@@ -202,7 +202,7 @@ public class RegisterFragment extends Fragment {
         }
 
         if (dateText.isEmpty()) {
-            dateInput.setError("Enter a password");
+            dateInput.setError("Enter a date");
             isValid = false;
         } else {
             dateInput.setError(null);

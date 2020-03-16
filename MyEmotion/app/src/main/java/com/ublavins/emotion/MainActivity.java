@@ -1,6 +1,7 @@
 package com.ublavins.emotion;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
@@ -13,7 +14,9 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 
 public class MainActivity extends AppCompatActivity implements MainCallback {
 
@@ -45,6 +48,17 @@ public class MainActivity extends AppCompatActivity implements MainCallback {
                             if (docSnap.exists()) {
                                 snap = docSnap;
                             }
+                        }
+                    }
+                }
+        );
+
+        docRef.addSnapshotListener(
+                new EventListener<DocumentSnapshot>() {
+                    @Override
+                    public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
+                        if (documentSnapshot != null && documentSnapshot.exists()) {
+                            snap = documentSnapshot;
                         }
                     }
                 }

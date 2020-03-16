@@ -8,4 +8,6 @@
     <string name="tos">I hereby accept to the <u><b>terms and condition</b></u></string>
     <string name="logout">Logout</string>
     <string name="edit_profile">Edit Profile</string>
+    <string name="save_profile">Save Profile</string>
+    <string name="delete_account">Delete Account</string>
 </resources>

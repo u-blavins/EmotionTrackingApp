@@ -1,5 +1,7 @@
 package com.ublavins.emotion;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -8,6 +10,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 
 import android.util.ArrayMap;
@@ -56,6 +59,7 @@ import java.util.Map;
  */
 public class AddEntryFragment extends Fragment implements OnMapReadyCallback {
 
+    private static final int REQUEST_LOCATION = 1;
     private MapView mapView;
     private GoogleMap googleMap;
     private Marker marker;
@@ -139,19 +143,18 @@ public class AddEntryFragment extends Fragment implements OnMapReadyCallback {
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        fusedLocationClient.getLastLocation()
-                                .addOnSuccessListener(new OnSuccessListener<Location>() {
-                                    @Override
-                                    public void onSuccess(Location location) {
-                                        // Got last known location. In some rare situations this can be null.
-                                        if (location != null) {
-                                            LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
-                                            setMarker(new MarkerOptions().position(latLng).title("Current Location"));
-                                            googleMap.animateCamera(CameraUpdateFactory
-                                                    .newLatLngZoom(latLng, 18));
-                                        }
-                                    }
-                                });
+                        if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION)
+                                != PackageManager.PERMISSION_GRANTED
+                                && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION)
+                                != PackageManager.PERMISSION_GRANTED) {
+
+                            requestPermissions(new String[]{android.Manifest.permission.ACCESS_COARSE_LOCATION,
+                                            android.Manifest.permission.ACCESS_FINE_LOCATION},
+                                    REQUEST_LOCATION);
+
+                            return;
+                        }
+                        getCurrentLocation();
                     }
                 }
         );
@@ -172,8 +175,45 @@ public class AddEntryFragment extends Fragment implements OnMapReadyCallback {
     @Override
     public void onMapReady(GoogleMap gMap) {
         googleMap = gMap;
-        googleMap.setMyLocationEnabled(true);
+        if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED) {
+            googleMap.setMyLocationEnabled(true);
+        }
         googleMap.getUiSettings().setMyLocationButtonEnabled(true);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(
+            int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+
+        switch (requestCode) {
+            case REQUEST_LOCATION: {
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    getCurrentLocation();
+                }
+                return;
+            }
+
+        }
+    }
+
+    private void getCurrentLocation() {
+        fusedLocationClient.getLastLocation()
+                .addOnSuccessListener(new OnSuccessListener<Location>() {
+                    @Override
+                    public void onSuccess(Location location) {
+                        // Got last known location. In some rare situations this can be null.
+                        if (location != null) {
+                            LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
+                            setMarker(new MarkerOptions().position(latLng).title("Current Location"));
+                            googleMap.animateCamera(CameraUpdateFactory
+                                    .newLatLngZoom(latLng, 18));
+                        }
+                    }
+                });
     }
 
     private void addEntry() {
