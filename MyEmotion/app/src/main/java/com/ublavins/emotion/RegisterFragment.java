@@ -1,10 +1,12 @@
 package com.ublavins.emotion;
 
 import android.app.DatePickerDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 
 import android.util.Patterns;
@@ -15,6 +17,7 @@ import android.widget.ArrayAdapter;
 
 import android.widget.CheckBox;
 import android.widget.DatePicker;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -43,6 +46,7 @@ public class RegisterFragment extends Fragment {
     private TextInputLayout fnameInput, lnameInput, emailInput, passwordInput,
         dateInput;
     private TextInputEditText fname, lname, email, password, date;
+    private TextView tosText;
     private MaterialButton signUp;
     private CheckBox tos;
     private static final String[] GENDERS = {"Male", "Female", "Other"};
@@ -76,6 +80,7 @@ public class RegisterFragment extends Fragment {
         passwordInput = view.findViewById(R.id.passwordInputLayout);
         dateInput = view.findViewById(R.id.dobInputLayout);
         tos = view.findViewById(R.id.tosCheck);
+        tosText = view.findViewById(R.id.tosText);
         fname = view.findViewById(R.id.fnameRegister);
         lname = view.findViewById(R.id.lnameRegister);
         email = view.findViewById(R.id.emailRegister);
@@ -87,6 +92,29 @@ public class RegisterFragment extends Fragment {
         gender.setAdapter(adapter);
         signUp = view.findViewById(R.id.signUpButton);
 
+        tosText.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), R.style.AlertDialogStyle);
+                        builder.setTitle("Agree to terms and conditions");
+                        builder.setMessage("By clicking agree, I hereby accept the storage of personal data and possible use of data for research purposes.");
+                        builder.setPositiveButton("AGREE", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                tos.setChecked(true);
+                            }
+                        });
+                        builder.setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+
+                            }
+                        });
+                        builder.show();
+                    }
+                }
+        );
 
         date.setOnClickListener(
                 new View.OnClickListener() {
