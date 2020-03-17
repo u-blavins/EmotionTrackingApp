@@ -73,7 +73,6 @@ public class MapChartFragment extends Fragment implements OnMapReadyCallback,
         mapView.onCreate(savedInstanceState);
         mapView.onResume();
         loadMap();
-        mapView.getMapAsync(this);
         db.collection("Entries").document(
                 FirebaseAuth.getInstance().getCurrentUser().getUid())
                 .collection("entry").get().addOnCompleteListener(
@@ -92,6 +91,7 @@ public class MapChartFragment extends Fragment implements OnMapReadyCallback,
                     }
                 }
         );
+        mapView.getMapAsync(this);
         return view;
     }
 

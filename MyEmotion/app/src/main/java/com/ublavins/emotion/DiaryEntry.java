@@ -8,6 +8,8 @@ public class DiaryEntry {
     private String entryThoughts;
     private long entryTimestamp;
 
+    public DiaryEntry() {}
+
     public DiaryEntry(String id, int icon, String date, String time, String thoughts, long timestamp) {
         entryId = id;
         entryEmojiIcon = icon;

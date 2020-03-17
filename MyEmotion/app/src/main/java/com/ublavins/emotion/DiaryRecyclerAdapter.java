@@ -5,12 +5,19 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
+
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+
 import java.util.ArrayList;
+import java.util.Map;
 
 public class DiaryRecyclerAdapter extends RecyclerView.Adapter<DiaryRecyclerAdapter.DiaryViewHolder> {
     private ArrayList<DiaryEntry> diaryEntryList;
@@ -59,7 +66,21 @@ public class DiaryRecyclerAdapter extends RecyclerView.Adapter<DiaryRecyclerAdap
 
         @Override
         public void onClick(View view) {
-            Toast.makeText( view.getContext(), view.getTag().toString(), Toast.LENGTH_SHORT).show();
+            FirebaseFirestore.getInstance().collection("Entries")
+                    .document(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                    .collection("entry").document(view.getTag().toString()).get()
+                    .addOnSuccessListener(
+                    new OnSuccessListener<DocumentSnapshot>() {
+                        @Override
+                        public void onSuccess(DocumentSnapshot documentSnapshot) {
+                            AppCompatActivity activity = (AppCompatActivity)view.getContext();
+                            EntryFragment entryFragment = new EntryFragment(documentSnapshot);
+                            activity.getSupportFragmentManager().beginTransaction()
+                                    .replace(R.id.mainFragmentFrame, entryFragment)
+                                    .addToBackStack(null).commit();
+                        }
+                    }
+            );
         }
     }
 
