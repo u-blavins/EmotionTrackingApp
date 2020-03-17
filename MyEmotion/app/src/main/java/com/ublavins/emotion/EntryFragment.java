@@ -25,6 +25,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -43,8 +44,9 @@ import java.util.List;
 public class EntryFragment extends Fragment implements OnMapReadyCallback {
 
     private DocumentSnapshot entry;
+    private MaterialButton updateEntry, deleteEntry;
     private CheckBox happyCheck, okayCheck, neutralCheck, sadCheck, angryCheck;
-    private TextInputEditText thoughts;
+    private TextInputEditText thoughtsText;
     private GoogleMap googleMap;
     private Marker marker;
     private MapView map;
@@ -53,6 +55,7 @@ public class EntryFragment extends Fragment implements OnMapReadyCallback {
     private FirebaseFirestore db;
     private FirebaseUser mUser;
     private FusedLocationProviderClient fusedLocationClient;
+    private String emotionStr = "";
 
     public EntryFragment(DocumentSnapshot documentSnapshot) {
         entry = documentSnapshot;
@@ -76,6 +79,7 @@ public class EntryFragment extends Fragment implements OnMapReadyCallback {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_entry, container, false);
+        emotionStr = entry.get("Emotion").toString();
         map = view.findViewById(R.id.mapView);
         map.onCreate(savedInstanceState);
         map.onResume();
@@ -85,11 +89,36 @@ public class EntryFragment extends Fragment implements OnMapReadyCallback {
         neutralCheck = view.findViewById(R.id.neutralCheck);
         sadCheck = view.findViewById(R.id.sadCheck);
         angryCheck = view.findViewById(R.id.angryCheck);
-        thoughts = view.findViewById(R.id.thoughtsText);
+        thoughtsText = view.findViewById(R.id.thoughtsText);
         searchView = view.findViewById(R.id.mapSearch);
         currLocationButton = view.findViewById(R.id.currLocationButton);
-        thoughts.setText(entry.get("Thoughts").toString());
+        updateEntry = view.findViewById(R.id.updateEntryButton);
+        deleteEntry = view.findViewById(R.id.deleteEntryButton);
+        setCheck();
+        setCheckboxes();
+        thoughtsText.setText(entry.get("Thoughts").toString());
         setMap();
+
+
+        updateEntry.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        updateEntry();
+                    }
+                }
+        );
+
+        deleteEntry.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        deleteEntry();
+                    }
+                }
+        );
+
+
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String s) {
@@ -137,6 +166,112 @@ public class EntryFragment extends Fragment implements OnMapReadyCallback {
         googleMap.getUiSettings().setMyLocationButtonEnabled(true);
     }
 
+    private void updateEntry() {
+        if (validateEntry()) {
+            String thoughts = thoughtsText.getText().toString();
+            String lat = "";
+            String lon = "";
+            LatLng latLng;
+
+            if (marker != null) {
+                latLng = marker.getPosition();
+                lat = String.valueOf(latLng.latitude);
+                lon = String.valueOf(latLng.longitude);
+            }
+
+            db.collection("Entries").document(mUser.getUid())
+                    .collection("entry").document(entry.getId()).update(
+                        "Emotion", emotionStr,
+                        "Thoughts", thoughts,
+                        "Lat", lat,
+                        "Lon", lon
+            );
+        }
+    }
+
+    private boolean validateEntry() {
+        boolean isValid = true;
+        if (happyCheck.isChecked()) emotionStr = "Happy";
+        if (okayCheck.isChecked()) emotionStr = "Okay";
+        if (neutralCheck.isChecked()) emotionStr = "Neutral";
+        if (sadCheck.isChecked()) emotionStr = "Sad";
+        if (angryCheck.isChecked()) emotionStr = "Angry";
+
+        if (emotionStr.equals("")) isValid = false;
+
+        return isValid;
+    }
+
+    private void deleteEntry() {
+        db.collection("Entries").document(mUser.getUid()).collection("entry")
+                .document(entry.getId()).delete().addOnSuccessListener(
+                new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        getFragmentManager().popBackStack();
+                    }
+                }
+        );
+    }
+
+    private void setCheckboxes() {
+        happyCheck.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (happyCheck.isChecked()) {
+                    okayCheck.setChecked(false);
+                    neutralCheck.setChecked(false);
+                    sadCheck.setChecked(false);
+                    angryCheck.setChecked(false);
+                }
+            }
+        });
+        okayCheck.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (okayCheck.isChecked()) {
+                    happyCheck.setChecked(false);
+                    neutralCheck.setChecked(false);
+                    sadCheck.setChecked(false);
+                    angryCheck.setChecked(false);
+                }
+            }
+        });
+        neutralCheck.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (neutralCheck.isChecked()) {
+                    happyCheck.setChecked(false);
+                    okayCheck.setChecked(false);
+                    sadCheck.setChecked(false);
+                    angryCheck.setChecked(false);
+                }
+            }
+        });
+        sadCheck.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (sadCheck.isChecked()) {
+                    happyCheck.setChecked(false);
+                    okayCheck.setChecked(false);
+                    neutralCheck.setChecked(false);
+                    angryCheck.setChecked(false);
+                }
+            }
+        });
+        angryCheck.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (angryCheck.isChecked()) {
+                    happyCheck.setChecked(false);
+                    okayCheck.setChecked(false);
+                    sadCheck.setChecked(false);
+                    neutralCheck.setChecked(false);
+                }
+            }
+        });
+    }
+
     private void setCheck() {
         String emotion = entry.get("Emotion").toString();
         switch (emotion) {
@@ -169,7 +304,7 @@ public class EntryFragment extends Fragment implements OnMapReadyCallback {
 
                         if (!lat.equals("") && !lon.equals("")) {
                             LatLng latLng = new LatLng(Double.parseDouble(lat), Double.parseDouble(lon));
-                            googleMap.addMarker(new MarkerOptions().position(latLng).title("Location"));
+                            marker = googleMap.addMarker(new MarkerOptions().position(latLng).title("Location"));
                             googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
                         }
                     }

@@ -138,6 +138,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="50dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="50dp"
         android:backgroundTint="@color/colorPrimary"
         android:padding="8dp"
@@ -151,13 +152,14 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/deleteButton"
-        app:layout_constraintVertical_bias="0.13" />
+        app:layout_constraintVertical_bias="0.0" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/deleteButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="50dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="50dp"
         android:backgroundTint="@color/colorPrimary"
         android:padding="8dp"
@@ -169,9 +171,10 @@
         app:cornerRadius="50dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editButton"
-        app:layout_constraintVertical_bias="0.13" />
+        app:layout_constraintVertical_bias="0.0" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/editButton"

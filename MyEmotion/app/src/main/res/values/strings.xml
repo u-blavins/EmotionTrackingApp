@@ -10,4 +10,6 @@
     <string name="edit_profile">Edit Profile</string>
     <string name="save_profile">Save Profile</string>
     <string name="delete_account">Delete Account</string>
+    <string name="update_entry">Update Entry</string>
+    <string name="delete_entry">Delete Entry</string>
 </resources>

@@ -8,8 +8,6 @@ import android.location.Location;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 
@@ -104,6 +102,7 @@ public class AddEntryFragment extends Fragment implements OnMapReadyCallback {
         neutralCheck = view.findViewById(R.id.neutralCheck);
         sadCheck = view.findViewById(R.id.sadCheck);
         angryCheck = view.findViewById(R.id.angryCheck);
+        setCheckboxes();
         thoughtsLayout = view.findViewById(R.id.thoughtsLayout);
         thoughtsText = view.findViewById(R.id.thoughtsText);
         mapView = view.findViewById(R.id.mapView);
@@ -214,6 +213,64 @@ public class AddEntryFragment extends Fragment implements OnMapReadyCallback {
                         }
                     }
                 });
+    }
+
+    private void setCheckboxes() {
+        happyCheck.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (happyCheck.isChecked()) {
+                    okayCheck.setChecked(false);
+                    neutralCheck.setChecked(false);
+                    sadCheck.setChecked(false);
+                    angryCheck.setChecked(false);
+                }
+            }
+        });
+        okayCheck.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (okayCheck.isChecked()) {
+                    happyCheck.setChecked(false);
+                    neutralCheck.setChecked(false);
+                    sadCheck.setChecked(false);
+                    angryCheck.setChecked(false);
+                }
+            }
+        });
+        neutralCheck.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (neutralCheck.isChecked()) {
+                    happyCheck.setChecked(false);
+                    okayCheck.setChecked(false);
+                    sadCheck.setChecked(false);
+                    angryCheck.setChecked(false);
+                }
+            }
+        });
+        sadCheck.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (sadCheck.isChecked()) {
+                    happyCheck.setChecked(false);
+                    okayCheck.setChecked(false);
+                    neutralCheck.setChecked(false);
+                    angryCheck.setChecked(false);
+                }
+            }
+        });
+        angryCheck.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (angryCheck.isChecked()) {
+                    happyCheck.setChecked(false);
+                    okayCheck.setChecked(false);
+                    sadCheck.setChecked(false);
+                    neutralCheck.setChecked(false);
+                }
+            }
+        });
     }
 
     private void addEntry() {

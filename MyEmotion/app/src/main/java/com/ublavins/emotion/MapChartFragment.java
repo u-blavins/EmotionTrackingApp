@@ -73,6 +73,7 @@ public class MapChartFragment extends Fragment implements OnMapReadyCallback,
         mapView.onCreate(savedInstanceState);
         mapView.onResume();
         loadMap();
+        mapView.getMapAsync(this);
         db.collection("Entries").document(
                 FirebaseAuth.getInstance().getCurrentUser().getUid())
                 .collection("entry").get().addOnCompleteListener(
@@ -81,17 +82,19 @@ public class MapChartFragment extends Fragment implements OnMapReadyCallback,
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : task.getResult()) {
-                                setMarker(getMarker(
-                                        document.get("Lat").toString(),
-                                        document.get("Lon").toString(),
-                                        document.get("Emotion").toString()
-                                ));
+                                if (!document.get("Lat").toString().equals("") &&
+                                !document.get("Lon").toString().equals("")) {
+                                    setMarker(getMarker(
+                                            document.get("Lat").toString(),
+                                            document.get("Lon").toString(),
+                                            document.get("Emotion").toString()
+                                    ));
+                                }
                             }
                         }
                     }
                 }
         );
-        mapView.getMapAsync(this);
         return view;
     }
 
