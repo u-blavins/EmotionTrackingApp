@@ -3,9 +3,11 @@ package com.ublavins.emotion;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -20,6 +22,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.SearchView;
 import android.widget.Toast;
 
@@ -51,6 +54,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import static android.app.Activity.RESULT_OK;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -60,12 +65,14 @@ import java.util.Map;
 public class AddEntryFragment extends Fragment implements OnMapReadyCallback {
 
     private static final int REQUEST_LOCATION = 1;
-    static final int REQUEST_IMAGE_CAPTURE = 100;
+    private static final int REQUEST_IMAGE_CAPTURE = 100;
+    private static final int REQUEST_IMAGE_PICK = 101;
     private MapView mapView;
     private GoogleMap googleMap;
     private Marker marker;
     private SearchView searchView;
     private ImageButton currLocationButton;
+    private ImageView photoView;
     private FusedLocationProviderClient fusedLocationClient;
     private MaterialButton addEntryButton, uploadPhoto, selectPhoto;
     private TextInputLayout thoughtsLayout;
@@ -110,6 +117,7 @@ public class AddEntryFragment extends Fragment implements OnMapReadyCallback {
         thoughtsText = view.findViewById(R.id.thoughtsText);
         selectPhoto = view.findViewById(R.id.selectPhotoButton);
         uploadPhoto = view.findViewById(R.id.uploadPhotoButton);
+        photoView = view.findViewById(R.id.photoView);
         mapView = view.findViewById(R.id.mapView);
         mapView.onCreate(savedInstanceState);
         mapView.onResume();
@@ -214,6 +222,24 @@ public class AddEntryFragment extends Fragment implements OnMapReadyCallback {
     }
 
     @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+            Bitmap imageBitmap = (Bitmap) data.getExtras().get("data");
+            photoView.setImageBitmap(imageBitmap);
+        }
+        if (requestCode == REQUEST_IMAGE_PICK && resultCode == RESULT_OK) {
+            Uri imageUri = data.getData();
+            Bitmap bitmap = null;
+            try {
+                bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), imageUri);
+                photoView.setImageBitmap(bitmap);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    @Override
     public void onRequestPermissionsResult(
             int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
 
@@ -232,24 +258,31 @@ public class AddEntryFragment extends Fragment implements OnMapReadyCallback {
                 }
                 return;
             }
+            case REQUEST_IMAGE_PICK: {
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    selectPhoto();
+                }
+                return;
+            }
 
         }
     }
 
     private void selectPhoto() {
-
+        Intent getPictureIntent = new Intent(Intent.ACTION_PICK);
+        getPictureIntent.setType("image/*");
+        startActivityForResult(getPictureIntent, REQUEST_IMAGE_PICK);
     }
 
     private void uploadPhoto() {
-
+        // https://developer.android.com/training/camera/photobasics
         if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.CAMERA)
                 == PackageManager.PERMISSION_GRANTED) {
             Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
             if (takePictureIntent.resolveActivity(getActivity().getPackageManager()) != null) {
                 startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
             }
-        } else {
-
         }
     }
 

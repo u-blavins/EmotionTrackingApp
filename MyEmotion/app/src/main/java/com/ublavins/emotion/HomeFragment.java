@@ -6,6 +6,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -29,7 +30,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class HomeFragment extends Fragment {
+public class HomeFragment extends Fragment implements FragmentManager.OnBackStackChangedListener {
 
     private FloatingActionButton addEntry;
     private RecyclerView diaryRecyclerView;
@@ -39,6 +40,7 @@ public class HomeFragment extends Fragment {
     private List<DiaryEntry> entries = new ArrayList<>();
     private MaterialSpinner emotionSpinner;
     private static final String[] EMOTIONS = {"All", "Happy", "Okay", "Neutral", "Sad", "Angry"};
+    private boolean test = true;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -62,12 +64,12 @@ public class HomeFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
         final ArrayList<DiaryEntry> entryList = new ArrayList<>();
         diaryRecyclerView = view.findViewById(R.id.diaryRecyclerView);
+        diaryRecyclerView.setHasFixedSize(true);
         emotionSpinner = view.findViewById(R.id.emotionSpinner);
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(),
                 android.R.layout.simple_dropdown_item_1line, EMOTIONS);
         emotionSpinner.setAdapter(adapter);
         emotionSpinner.setSelection(0);
-        diaryRecyclerView.setHasFixedSize(true);
         diaryLayoutManager = new LinearLayoutManager(getContext());
         diaryAdapter = new DiaryRecyclerAdapter(entryList);
 
@@ -79,7 +81,7 @@ public class HomeFragment extends Fragment {
                     @RequiresApi(api = Build.VERSION_CODES.N)
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
+                        if (task.isSuccessful() && test) {
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                     DiaryEntry entry = new DiaryEntry(
                                                 document.getId(),
@@ -94,6 +96,7 @@ public class HomeFragment extends Fragment {
                             }
                             diaryRecyclerView.setLayoutManager(diaryLayoutManager);
                             diaryRecyclerView.setAdapter(diaryAdapter);
+                            test = false;
                         } else {
 
                         }
@@ -127,6 +130,14 @@ public class HomeFragment extends Fragment {
                 }
         );
         return view;
+    }
+
+    @Override
+    public void onBackStackChanged() {
+//        HomeFragment homeFragment = new HomeFragment();
+//        getFragmentManager().beginTransaction().replace(R.id.mainFragmentFrame, homeFragment)
+//                .commit();
+        Toast.makeText(getContext(), "Test", Toast.LENGTH_SHORT).show();
     }
 
     private void filterEmotion(String emotion) {

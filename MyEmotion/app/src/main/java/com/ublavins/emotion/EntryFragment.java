@@ -186,6 +186,9 @@ public class EntryFragment extends Fragment implements OnMapReadyCallback {
                         "Lat", lat,
                         "Lon", lon
             );
+            HomeFragment homeFragment = new HomeFragment();
+            getFragmentManager().beginTransaction().replace(R.id.mainFragmentFrame, homeFragment)
+                    .commit();
         }
     }
 
@@ -208,7 +211,9 @@ public class EntryFragment extends Fragment implements OnMapReadyCallback {
                 new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-                        getFragmentManager().popBackStack();
+                        HomeFragment homeFragment = new HomeFragment();
+                        getFragmentManager().beginTransaction().replace(R.id.mainFragmentFrame, homeFragment)
+                                .commit();
                     }
                 }
         );
