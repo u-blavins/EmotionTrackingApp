@@ -1,6 +1,7 @@
 package com.ublavins.emotion;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
@@ -11,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 
+import android.provider.MediaStore;
 import android.util.ArrayMap;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -58,13 +60,14 @@ import java.util.Map;
 public class AddEntryFragment extends Fragment implements OnMapReadyCallback {
 
     private static final int REQUEST_LOCATION = 1;
+    static final int REQUEST_IMAGE_CAPTURE = 100;
     private MapView mapView;
     private GoogleMap googleMap;
     private Marker marker;
     private SearchView searchView;
     private ImageButton currLocationButton;
     private FusedLocationProviderClient fusedLocationClient;
-    private MaterialButton addEntryButton;
+    private MaterialButton addEntryButton, uploadPhoto, selectPhoto;
     private TextInputLayout thoughtsLayout;
     private TextInputEditText thoughtsText;
     private String emotion = "";
@@ -105,6 +108,8 @@ public class AddEntryFragment extends Fragment implements OnMapReadyCallback {
         setCheckboxes();
         thoughtsLayout = view.findViewById(R.id.thoughtsLayout);
         thoughtsText = view.findViewById(R.id.thoughtsText);
+        selectPhoto = view.findViewById(R.id.selectPhotoButton);
+        uploadPhoto = view.findViewById(R.id.uploadPhotoButton);
         mapView = view.findViewById(R.id.mapView);
         mapView.onCreate(savedInstanceState);
         mapView.onResume();
@@ -158,6 +163,31 @@ public class AddEntryFragment extends Fragment implements OnMapReadyCallback {
                 }
         );
 
+        selectPhoto.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        selectPhoto();
+                    }
+                }
+        );
+
+        uploadPhoto.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.CAMERA)
+                                != PackageManager.PERMISSION_GRANTED) {
+
+                            requestPermissions(new String[]{Manifest.permission.CAMERA},
+                                    REQUEST_IMAGE_CAPTURE);
+                            return;
+                        }
+                        uploadPhoto();
+                    }
+                }
+        );
+
         addEntryButton.setOnClickListener(
                 new View.OnClickListener() {
                     @Override
@@ -195,6 +225,30 @@ public class AddEntryFragment extends Fragment implements OnMapReadyCallback {
                 }
                 return;
             }
+            case REQUEST_IMAGE_CAPTURE: {
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    uploadPhoto();
+                }
+                return;
+            }
+
+        }
+    }
+
+    private void selectPhoto() {
+
+    }
+
+    private void uploadPhoto() {
+
+        if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.CAMERA)
+                == PackageManager.PERMISSION_GRANTED) {
+            Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            if (takePictureIntent.resolveActivity(getActivity().getPackageManager()) != null) {
+                startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+            }
+        } else {
 
         }
     }
@@ -306,7 +360,9 @@ public class AddEntryFragment extends Fragment implements OnMapReadyCallback {
                         public void onComplete(@NonNull Task<DocumentReference> task) {
                             if (task.isSuccessful()) {
                                 makeToast("Added entry to diary");
-                                getFragmentManager().popBackStack();
+                                HomeFragment homeFragment = new HomeFragment();
+                                getFragmentManager().beginTransaction().replace(R.id.mainFragmentFrame,
+                                        homeFragment).commit();
                             } else {
                                 makeToast("Request unsuccessful");
                             }

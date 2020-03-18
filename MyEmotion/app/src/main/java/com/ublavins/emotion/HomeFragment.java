@@ -12,6 +12,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -21,8 +23,10 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.tiper.MaterialSpinner;
 
 import java.util.ArrayList;
+import java.util.List;
 
 
 public class HomeFragment extends Fragment {
@@ -32,12 +36,15 @@ public class HomeFragment extends Fragment {
     private RecyclerView.Adapter diaryAdapter;
     private RecyclerView.LayoutManager diaryLayoutManager;
     private FirebaseFirestore db;
+    private List<DiaryEntry> entries = new ArrayList<>();
+    private MaterialSpinner emotionSpinner;
+    private static final String[] EMOTIONS = {"All", "Happy", "Okay", "Neutral", "Sad", "Angry"};
 
     public HomeFragment() {
         // Required empty public constructor
     }
 
-    public static HomeFragment newInstance(String param1, String param2) {
+    public static HomeFragment newInstance() {
         HomeFragment fragment = new HomeFragment();
         return fragment;
     }
@@ -55,6 +62,11 @@ public class HomeFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
         final ArrayList<DiaryEntry> entryList = new ArrayList<>();
         diaryRecyclerView = view.findViewById(R.id.diaryRecyclerView);
+        emotionSpinner = view.findViewById(R.id.emotionSpinner);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(),
+                android.R.layout.simple_dropdown_item_1line, EMOTIONS);
+        emotionSpinner.setAdapter(adapter);
+        emotionSpinner.setSelection(0);
         diaryRecyclerView.setHasFixedSize(true);
         diaryLayoutManager = new LinearLayoutManager(getContext());
         diaryAdapter = new DiaryRecyclerAdapter(entryList);
@@ -69,22 +81,35 @@ public class HomeFragment extends Fragment {
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : task.getResult()) {
-                                entryList.add(
-                                        new DiaryEntry(
+                                    DiaryEntry entry = new DiaryEntry(
                                                 document.getId(),
                                                 getIcon(document.get("Emotion").toString()),
                                                 document.get("Date").toString(),
                                                 document.get("Time").toString(),
                                                 document.get("Thoughts").toString(),
                                                 document.getLong("Timestamp")
-                                        )
-                                );
+                                        );
+                                    entryList.add(entry);
+                                    entries.add(entry);
                             }
                             diaryRecyclerView.setLayoutManager(diaryLayoutManager);
                             diaryRecyclerView.setAdapter(diaryAdapter);
                         } else {
 
                         }
+                    }
+                }
+        );
+
+        emotionSpinner.setOnItemSelectedListener(
+                new MaterialSpinner.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(MaterialSpinner materialSpinner, View view, int i, long l) {
+                        filterEmotion(materialSpinner.getSelectedItem().toString());
+                    }
+
+                    @Override
+                    public void onNothingSelected(MaterialSpinner materialSpinner) {
                     }
                 }
         );
@@ -101,8 +126,25 @@ public class HomeFragment extends Fragment {
                     }
                 }
         );
-
         return view;
+    }
+
+    private void filterEmotion(String emotion) {
+        int icon = getIcon(emotion);
+        List<DiaryEntry> filterEntries = new ArrayList<>();
+        diaryLayoutManager = new LinearLayoutManager(getContext());
+        diaryAdapter = new DiaryRecyclerAdapter((ArrayList<DiaryEntry>) filterEntries);
+        if (emotion.equals("All")) {
+            for (DiaryEntry entry : entries) filterEntries.add(entry);
+        } else {
+            for (DiaryEntry entry : entries) {
+                if (entry.getIcon() == icon) {
+                    filterEntries.add(entry);
+                }
+            }
+        }
+        diaryRecyclerView.setLayoutManager(diaryLayoutManager);
+        diaryRecyclerView.setAdapter(diaryAdapter);
     }
 
     private int getIcon(String emotion) {
