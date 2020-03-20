@@ -1,6 +1,7 @@
 package com.ublavins.emotion;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -40,13 +41,18 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.util.Calendar;
@@ -74,13 +80,16 @@ public class AddEntryFragment extends Fragment implements OnMapReadyCallback {
     private ImageButton currLocationButton;
     private ImageView photoView;
     private FusedLocationProviderClient fusedLocationClient;
-    private MaterialButton addEntryButton, uploadPhoto, selectPhoto;
+    private MaterialButton uploadPhoto, selectPhoto;
     private TextInputLayout thoughtsLayout;
     private TextInputEditText thoughtsText;
     private String emotion = "";
     private CheckBox happyCheck, okayCheck, neutralCheck, sadCheck, angryCheck;
     private FirebaseFirestore db;
     private FirebaseUser mUser;
+    private FloatingActionButton addEntryButton;
+    private StorageReference mStorageRef;
+    private Uri mFilepath;
 
     public AddEntryFragment() {
         // Required empty public constructor
@@ -97,6 +106,7 @@ public class AddEntryFragment extends Fragment implements OnMapReadyCallback {
         mUser = FirebaseAuth.getInstance().getCurrentUser();
         db = FirebaseFirestore.getInstance();
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(getContext());
+        mStorageRef = FirebaseStorage.getInstance().getReference();
     }
 
     @Override
@@ -106,7 +116,7 @@ public class AddEntryFragment extends Fragment implements OnMapReadyCallback {
         View view = inflater.inflate(R.layout.fragment_add_entry, container, false);
         searchView = view.findViewById(R.id.mapSearch);
         currLocationButton = view.findViewById(R.id.currLocationButton);
-        addEntryButton = view.findViewById(R.id.addEntryButton);
+        addEntryButton = view.findViewById(R.id.addEntryFloatingButton);
         happyCheck = view.findViewById(R.id.happyCheck);
         okayCheck = view.findViewById(R.id.okayCheck);
         neutralCheck = view.findViewById(R.id.neutralCheck);
@@ -190,8 +200,9 @@ public class AddEntryFragment extends Fragment implements OnMapReadyCallback {
                             requestPermissions(new String[]{Manifest.permission.CAMERA},
                                     REQUEST_IMAGE_CAPTURE);
                             return;
+                        } else {
+                            uploadPhoto();
                         }
-                        uploadPhoto();
                     }
                 }
         );
@@ -225,18 +236,32 @@ public class AddEntryFragment extends Fragment implements OnMapReadyCallback {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
             Bitmap imageBitmap = (Bitmap) data.getExtras().get("data");
+            photoView.getLayoutParams().width = 800;
+            photoView.getLayoutParams().height = 800;
+            photoView.requestLayout();
+            mFilepath = getImageUri(getContext(), imageBitmap);
             photoView.setImageBitmap(imageBitmap);
-        }
-        if (requestCode == REQUEST_IMAGE_PICK && resultCode == RESULT_OK) {
-            Uri imageUri = data.getData();
-            Bitmap bitmap = null;
+        } else if (requestCode == REQUEST_IMAGE_PICK && resultCode == RESULT_OK) {
+            mFilepath = data.getData();
+            Bitmap imageBitmap = null;
             try {
-                bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), imageUri);
-                photoView.setImageBitmap(bitmap);
+                photoView.getLayoutParams().width = 800;
+                photoView.getLayoutParams().height = 800;
+                photoView.requestLayout();
+                imageBitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), mFilepath);
+                photoView.setImageBitmap(imageBitmap);
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
+    }
+
+    // https://stackoverflow.com/questions/9890757/android-camera-data-intent-returns-null
+    private Uri getImageUri(Context applicationContext, Bitmap photo) {
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        photo.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+        String path = MediaStore.Images.Media.insertImage(getActivity().getContentResolver(), photo, "", null);
+        return Uri.parse(path);
     }
 
     @Override
@@ -300,6 +325,19 @@ public class AddEntryFragment extends Fragment implements OnMapReadyCallback {
                         }
                     }
                 });
+    }
+
+    private void storePhoto(String uri) {
+        if (mFilepath != null) {
+            StorageReference storageReference = mStorageRef.child(uri);
+
+            storageReference.putFile(mFilepath)
+                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                        }
+                    });
+        }
     }
 
     private void setCheckboxes() {
@@ -366,6 +404,7 @@ public class AddEntryFragment extends Fragment implements OnMapReadyCallback {
             String thoughts = thoughtsText.getText().toString();
             String lat = "";
             String lon = "";
+            String imgUrl = "";
             String currentDate = DateFormat.getDateInstance(DateFormat.SHORT).format(now.getTime());
             String currentTime = DateFormat.getTimeInstance(DateFormat.SHORT).format(now.getTime());
             LatLng latLng;
@@ -377,6 +416,11 @@ public class AddEntryFragment extends Fragment implements OnMapReadyCallback {
                 lon = String.valueOf(latLng.longitude);
             }
 
+            if (mStorageRef != null) {
+                imgUrl = "entries/" + mUser.getUid() + "/" + new Date().getTime() / 1000 + ".jpg";
+                storePhoto(imgUrl);
+            }
+
             entry.put("Emotion", emotion);
             entry.put("Thoughts", thoughts);
             entry.put("Lat", lat);
@@ -384,6 +428,7 @@ public class AddEntryFragment extends Fragment implements OnMapReadyCallback {
             entry.put("Date", currentDate);
             entry.put("Time", currentTime);
             entry.put("Timestamp", new Date().getTime() / 1000);
+            entry.put("Photo", imgUrl);
 
             db.collection("Entries")
                     .document(mUser.getUid()).collection("entry")

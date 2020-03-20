@@ -1,343 +1,342 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_height="match_parent"
-    android:layout_width="match_parent">
-
-<androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".AddEntryFragment">
 
-    <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/neutralImage"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:layout_marginTop="32dp"
-        app:layout_constraintEnd_toStartOf="@+id/sadImage"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/okayImage"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_neutral" />
-
-    <TextView
-        android:id="@+id/okayText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:textSize="20sp"
-        android:text="Okay"
-        app:layout_constraintEnd_toEndOf="@+id/okayImage"
-        app:layout_constraintStart_toStartOf="@+id/okayImage"
-        app:layout_constraintTop_toBottomOf="@+id/okayImage" />
-
-    <TextView
-        android:id="@+id/neutralText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:textSize="20sp"
-        android:text="Neutral"
-        app:layout_constraintEnd_toEndOf="@+id/neutralImage"
-        app:layout_constraintStart_toStartOf="@+id/neutralImage"
-        app:layout_constraintTop_toBottomOf="@+id/neutralImage" />
-
-    <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/okayImage"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:layout_marginTop="32dp"
-        android:tint="#999900"
-        app:layout_constraintEnd_toStartOf="@+id/neutralImage"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/happyImage"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_okay" />
-
-    <TextView
-        android:id="@+id/happyText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:textSize="20sp"
-        android:text="Happy"
-        app:layout_constraintEnd_toEndOf="@+id/happyImage"
-        app:layout_constraintStart_toStartOf="@+id/happyImage"
-        app:layout_constraintTop_toBottomOf="@+id/happyImage" />
-
-    <TextView
-        android:id="@+id/angryText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:textSize="20sp"
-        android:text="Angry"
-        app:layout_constraintEnd_toEndOf="@+id/angryImage"
-        app:layout_constraintStart_toStartOf="@+id/angryImage"
-        app:layout_constraintTop_toBottomOf="@+id/angryImage" />
-
-    <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/angryImage"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="8dp"
-        android:tint="@android:color/holo_red_dark"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/sadImage"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_angry" />
-
-    <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/happyImage"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="32dp"
-        android:tint="@android:color/holo_green_dark"
-        app:layout_constraintEnd_toStartOf="@+id/okayImage"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_happy" />
-
-    <TextView
-        android:id="@+id/sadText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:textSize="20sp"
-        android:text="Sad"
-        app:layout_constraintEnd_toEndOf="@+id/sadImage"
-        app:layout_constraintStart_toStartOf="@+id/sadImage"
-        app:layout_constraintTop_toBottomOf="@+id/sadImage" />
-
-    <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/sadImage"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:layout_marginTop="32dp"
-        android:tint="@android:color/holo_blue_dark"
-        app:layout_constraintEnd_toStartOf="@+id/angryImage"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/neutralImage"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_sad" />
-
-    <CheckBox
-        android:id="@+id/happyCheck"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:buttonTint="@color/colorPrimary"
-        android:scaleX="1.40"
-        android:scaleY="1.40"
-        app:layout_constraintEnd_toEndOf="@+id/happyText"
-        app:layout_constraintStart_toStartOf="@+id/happyText"
-        app:layout_constraintTop_toBottomOf="@+id/happyText" />
-
-    <CheckBox
-        android:id="@+id/okayCheck"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:buttonTint="@color/colorPrimary"
-        android:scaleX="1.40"
-        android:scaleY="1.40"
-        app:layout_constraintEnd_toEndOf="@+id/okayText"
-        app:layout_constraintStart_toStartOf="@+id/okayText"
-        app:layout_constraintTop_toBottomOf="@+id/okayText" />
-
-    <CheckBox
-        android:id="@+id/neutralCheck"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:buttonTint="@color/colorPrimary"
-        android:scaleX="1.40"
-        android:scaleY="1.40"
-        app:layout_constraintEnd_toEndOf="@+id/neutralText"
-        app:layout_constraintStart_toStartOf="@+id/neutralText"
-        app:layout_constraintTop_toBottomOf="@+id/neutralText" />
-
-    <CheckBox
-        android:id="@+id/sadCheck"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:buttonTint="@color/colorPrimary"
-        android:scaleX="1.40"
-        android:scaleY="1.40"
-        app:layout_constraintEnd_toEndOf="@+id/sadText"
-        app:layout_constraintStart_toStartOf="@+id/sadText"
-        app:layout_constraintTop_toBottomOf="@+id/sadText" />
-
-    <CheckBox
-        android:id="@+id/angryCheck"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:buttonTint="@color/colorPrimary"
-        android:scaleX="1.40"
-        android:scaleY="1.40"
-        app:layout_constraintEnd_toEndOf="@+id/angryText"
-        app:layout_constraintStart_toStartOf="@+id/angryText"
-        app:layout_constraintTop_toBottomOf="@+id/angryText" />
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/thoughtsLayout"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="25dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="25dp"
-        android:hint="Thoughts"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/neutralCheck"
-        app:layout_constraintVertical_bias="0.0">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/thoughtsText"
-            android:layout_width="match_parent"
-            android:layout_height="100dp"
-            android:gravity="left" />
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <LinearLayout
-        android:id="@+id/searchLayout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="25dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="25dp"
-        android:background="@drawable/search_rounded"
-        android:elevation="5dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/thoughtsLayout" >
-
-        <SearchView
-            android:id="@+id/mapSearch"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:iconifiedByDefault="false"
-            android:queryBackground="@android:color/transparent"
-            android:queryHint="Search Location" />
-
-        <ImageButton
-            android:id="@+id/currLocationButton"
-            android:layout_width="45dp"
-            android:layout_height="match_parent"
-            android:padding="10dp"
-            android:scaleX="0.72"
-            android:scaleY="0.72"
-            android:background="@drawable/ic_location_on_black_24dp"/>
-
-    </LinearLayout>
-
-    <com.google.android.gms.maps.MapView
-        android:id="@+id/mapView"
-        android:layout_width="375dp"
-        android:layout_height="251dp"
-        android:layout_marginStart="25dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="25dp"
-        android:background="@drawable/search_rounded"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/searchLayout"
-        app:layout_constraintVertical_bias="0.0" />
+    <ScrollView
+        android:layout_height="match_parent"
+        android:layout_width="match_parent">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/imageLayout"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginTop="10dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/mapView">
+        android:layout_height="match_parent">
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/selectPhotoButton"
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/neutralImage"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_marginTop="32dp"
+            app:layout_constraintEnd_toStartOf="@+id/sadImage"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/okayImage"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_neutral" />
+
+        <TextView
+            android:id="@+id/okayText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:backgroundTint="@color/colorPrimary"
-            android:padding="8dp"
-            android:text="Select Photo"
-            android:textAlignment="center"
-            android:textAllCaps="false"
-            android:textAppearance="@style/Widget.MaterialComponents.Button"
-            android:textColor="@android:color/white"
-            android:textSize="18sp"
-            app:cornerRadius="50dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.20"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/uploadPhotoButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:backgroundTint="@color/colorPrimary"
-            android:padding="8dp"
-            android:text="Upload Photo"
-            android:textAlignment="center"
-            android:textAllCaps="false"
-            android:textAppearance="@style/Widget.MaterialComponents.Button"
-            android:textColor="@android:color/white"
-            android:textSize="18sp"
-            app:cornerRadius="50dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.80"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <ImageView
-            android:id="@+id/photoView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
             android:layout_marginTop="20dp"
-            android:layout_marginEnd="10dp"
-            android:layout_marginBottom="20dp"
+            android:textSize="20sp"
+            android:text="Okay"
+            app:layout_constraintEnd_toEndOf="@+id/okayImage"
+            app:layout_constraintStart_toStartOf="@+id/okayImage"
+            app:layout_constraintTop_toBottomOf="@+id/okayImage" />
+
+        <TextView
+            android:id="@+id/neutralText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:textSize="20sp"
+            android:text="Neutral"
+            app:layout_constraintEnd_toEndOf="@+id/neutralImage"
+            app:layout_constraintStart_toStartOf="@+id/neutralImage"
+            app:layout_constraintTop_toBottomOf="@+id/neutralImage" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/okayImage"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_marginTop="32dp"
+            android:tint="#999900"
+            app:layout_constraintEnd_toStartOf="@+id/neutralImage"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/happyImage"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_okay" />
+
+        <TextView
+            android:id="@+id/happyText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:textSize="20sp"
+            android:text="Happy"
+            app:layout_constraintEnd_toEndOf="@+id/happyImage"
+            app:layout_constraintStart_toStartOf="@+id/happyImage"
+            app:layout_constraintTop_toBottomOf="@+id/happyImage" />
+
+        <TextView
+            android:id="@+id/angryText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:textSize="20sp"
+            android:text="Angry"
+            app:layout_constraintEnd_toEndOf="@+id/angryImage"
+            app:layout_constraintStart_toStartOf="@+id/angryImage"
+            app:layout_constraintTop_toBottomOf="@+id/angryImage" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/angryImage"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_marginTop="32dp"
+            android:layout_marginEnd="8dp"
+            android:tint="@android:color/holo_red_dark"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/sadImage"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_angry" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/happyImage"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="32dp"
+            android:tint="@android:color/holo_green_dark"
+            app:layout_constraintEnd_toStartOf="@+id/okayImage"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_happy" />
+
+        <TextView
+            android:id="@+id/sadText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:textSize="20sp"
+            android:text="Sad"
+            app:layout_constraintEnd_toEndOf="@+id/sadImage"
+            app:layout_constraintStart_toStartOf="@+id/sadImage"
+            app:layout_constraintTop_toBottomOf="@+id/sadImage" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/sadImage"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_marginTop="32dp"
+            android:tint="@android:color/holo_blue_dark"
+            app:layout_constraintEnd_toStartOf="@+id/angryImage"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/neutralImage"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_sad" />
+
+        <CheckBox
+            android:id="@+id/happyCheck"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:buttonTint="@color/colorPrimary"
+            android:scaleX="1.40"
+            android:scaleY="1.40"
+            app:layout_constraintEnd_toEndOf="@+id/happyText"
+            app:layout_constraintStart_toStartOf="@+id/happyText"
+            app:layout_constraintTop_toBottomOf="@+id/happyText" />
+
+        <CheckBox
+            android:id="@+id/okayCheck"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:buttonTint="@color/colorPrimary"
+            android:scaleX="1.40"
+            android:scaleY="1.40"
+            app:layout_constraintEnd_toEndOf="@+id/okayText"
+            app:layout_constraintStart_toStartOf="@+id/okayText"
+            app:layout_constraintTop_toBottomOf="@+id/okayText" />
+
+        <CheckBox
+            android:id="@+id/neutralCheck"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:buttonTint="@color/colorPrimary"
+            android:scaleX="1.40"
+            android:scaleY="1.40"
+            app:layout_constraintEnd_toEndOf="@+id/neutralText"
+            app:layout_constraintStart_toStartOf="@+id/neutralText"
+            app:layout_constraintTop_toBottomOf="@+id/neutralText" />
+
+        <CheckBox
+            android:id="@+id/sadCheck"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:buttonTint="@color/colorPrimary"
+            android:scaleX="1.40"
+            android:scaleY="1.40"
+            app:layout_constraintEnd_toEndOf="@+id/sadText"
+            app:layout_constraintStart_toStartOf="@+id/sadText"
+            app:layout_constraintTop_toBottomOf="@+id/sadText" />
+
+        <CheckBox
+            android:id="@+id/angryCheck"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:buttonTint="@color/colorPrimary"
+            android:scaleX="1.40"
+            android:scaleY="1.40"
+            app:layout_constraintEnd_toEndOf="@+id/angryText"
+            app:layout_constraintStart_toStartOf="@+id/angryText"
+            app:layout_constraintTop_toBottomOf="@+id/angryText" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/thoughtsLayout"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="25dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="25dp"
+            android:hint="Thoughts"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/neutralCheck"
+            app:layout_constraintVertical_bias="0.0">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/thoughtsText"
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:gravity="left" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <LinearLayout
+            android:id="@+id/searchLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="25dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="25dp"
+            android:background="@drawable/search_rounded"
+            android:elevation="5dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/thoughtsLayout" >
+
+            <SearchView
+                android:id="@+id/mapSearch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:iconifiedByDefault="false"
+                android:queryBackground="@android:color/transparent"
+                android:queryHint="Search Location" />
+
+            <ImageButton
+                android:id="@+id/currLocationButton"
+                android:layout_width="45dp"
+                android:layout_height="match_parent"
+                android:padding="10dp"
+                android:scaleX="0.72"
+                android:scaleY="0.72"
+                android:background="@drawable/ic_location_on_black_24dp"/>
+
+        </LinearLayout>
+
+        <com.google.android.gms.maps.MapView
+            android:id="@+id/mapView"
+            android:layout_width="375dp"
+            android:layout_height="251dp"
+            android:layout_marginStart="25dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="25dp"
+            android:background="@drawable/search_rounded"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/selectPhotoButton" />
+            app:layout_constraintTop_toBottomOf="@+id/searchLayout"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/imageLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/mapView">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/selectPhotoButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/colorPrimary"
+                android:padding="8dp"
+                android:text="Select Photo"
+                android:textAlignment="center"
+                android:textAllCaps="false"
+                android:textAppearance="@style/Widget.MaterialComponents.Button"
+                android:textColor="@android:color/white"
+                android:textSize="18sp"
+                app:cornerRadius="50dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.20"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/uploadPhotoButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/colorPrimary"
+                android:padding="8dp"
+                android:text="Upload Photo"
+                android:textAlignment="center"
+                android:textAllCaps="false"
+                android:textAppearance="@style/Widget.MaterialComponents.Button"
+                android:textColor="@android:color/white"
+                android:textSize="18sp"
+                app:cornerRadius="50dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.80"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/photoView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginBottom="20dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/selectPhotoButton" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/addEntryButton"
-        android:layout_width="match_parent"
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/addEntryFloatingButton"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="50dp"
-        android:layout_marginTop="15dp"
-        android:layout_marginEnd="50dp"
-        android:layout_marginBottom="30dp"
-        android:backgroundTint="@color/colorPrimary"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="20dp"
         android:padding="8dp"
-        android:text="Add Entry"
-        android:textAlignment="center"
-        android:textAllCaps="false"
-        android:textAppearance="@style/Widget.MaterialComponents.Button"
-        android:textColor="@android:color/white"
-        android:textSize="18sp"
-        app:cornerRadius="50dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageLayout"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0"
+        app:srcCompat="@drawable/ic_check_black_24dp"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
-</ScrollView>

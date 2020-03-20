@@ -1,10 +1,15 @@
 package com.ublavins.emotion;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
+import android.net.Uri;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 
 import android.util.Log;
@@ -13,7 +18,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.SearchView;
+import android.widget.Toast;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -31,6 +38,9 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
 import java.util.List;
@@ -43,6 +53,7 @@ import java.util.List;
  */
 public class EntryFragment extends Fragment implements OnMapReadyCallback {
 
+    private static final int REQUEST_LOCATION = 1;
     private DocumentSnapshot entry;
     private MaterialButton updateEntry, deleteEntry;
     private CheckBox happyCheck, okayCheck, neutralCheck, sadCheck, angryCheck;
@@ -56,6 +67,7 @@ public class EntryFragment extends Fragment implements OnMapReadyCallback {
     private FirebaseUser mUser;
     private FusedLocationProviderClient fusedLocationClient;
     private String emotionStr = "";
+    private ImageView photoView;
 
     public EntryFragment(DocumentSnapshot documentSnapshot) {
         entry = documentSnapshot;
@@ -94,6 +106,8 @@ public class EntryFragment extends Fragment implements OnMapReadyCallback {
         currLocationButton = view.findViewById(R.id.currLocationButton);
         updateEntry = view.findViewById(R.id.updateEntryButton);
         deleteEntry = view.findViewById(R.id.deleteEntryButton);
+        photoView = view.findViewById(R.id.photoView);
+        setPhoto();
         setCheck();
         setCheckboxes();
         thoughtsText.setText(entry.get("Thoughts").toString());
@@ -152,6 +166,17 @@ public class EntryFragment extends Fragment implements OnMapReadyCallback {
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
+                        if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION)
+                                != PackageManager.PERMISSION_GRANTED
+                                && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION)
+                                != PackageManager.PERMISSION_GRANTED) {
+
+                            requestPermissions(new String[]{android.Manifest.permission.ACCESS_COARSE_LOCATION,
+                                            android.Manifest.permission.ACCESS_FINE_LOCATION},
+                                    REQUEST_LOCATION);
+
+                            return;
+                        }
                         getCurrentLocation();
                     }
                 }
@@ -162,8 +187,28 @@ public class EntryFragment extends Fragment implements OnMapReadyCallback {
     @Override
     public void onMapReady(GoogleMap gMap) {
         googleMap = gMap;
-        googleMap.setMyLocationEnabled(true);
+        if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED) {
+            googleMap.setMyLocationEnabled(true);
+        }
         googleMap.getUiSettings().setMyLocationButtonEnabled(true);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(
+            int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+
+        switch (requestCode) {
+            case REQUEST_LOCATION: {
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    getCurrentLocation();
+                }
+                return;
+            }
+        }
     }
 
     private void updateEntry() {
@@ -339,6 +384,24 @@ public class EntryFragment extends Fragment implements OnMapReadyCallback {
             marker = googleMap.addMarker(markerOptions);
         } else {
             marker = googleMap.addMarker(markerOptions);
+        }
+    }
+
+    private void setPhoto() {
+        if (entry.get("Photo") != null) {
+            StorageReference storageReference = FirebaseStorage.getInstance().getReference();
+            StorageReference photo = storageReference.child(entry.get("Photo").toString());
+            photo.getDownloadUrl().addOnSuccessListener(
+                    new OnSuccessListener<Uri>() {
+                        @Override
+                        public void onSuccess(Uri uri) {
+                            photoView.getLayoutParams().height = 800;
+                            photoView.getLayoutParams().width = 800;
+                            photoView.requestLayout();
+                            Picasso.get().load(uri).into(photoView);
+                        }
+                    }
+            );
         }
     }
 }
