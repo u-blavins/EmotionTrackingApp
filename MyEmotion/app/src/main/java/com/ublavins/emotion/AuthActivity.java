@@ -40,7 +40,9 @@ public class AuthActivity extends AppCompatActivity implements AuthCallback {
     }
 
     @Override
-    public void resetPassFragement() {
-
+    public void resetPassFragment() {
+        ResetPasswordFragment resetPasswordFragment = new ResetPasswordFragment();
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragmentFrame,
+                resetPasswordFragment).addToBackStack(null).commit();
     }
 }

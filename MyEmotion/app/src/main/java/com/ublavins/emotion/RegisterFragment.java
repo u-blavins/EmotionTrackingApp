@@ -225,6 +225,9 @@ public class RegisterFragment extends Fragment {
         if (passText.isEmpty()) {
             passwordInput.setError("Enter a password");
             isValid = false;
+        } else if (passText.length() < 8) {
+            passwordInput.setError("Password must have a minimum length of 8 characters");
+            isValid = false;
         } else {
             passwordInput.setError(null);
         }
@@ -245,7 +248,7 @@ public class RegisterFragment extends Fragment {
 
         if (!tos.isChecked()) {
             isValid = false;
-            makeToast("Check terms of services");
+            makeToast("Check terms and conditions");
         }
 
         return isValid;

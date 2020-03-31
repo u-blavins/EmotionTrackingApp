@@ -31,6 +31,7 @@ public class LoginFragment extends Fragment {
 
     private MaterialButton loginButton;
     private MaterialButton registerButton;
+    private MaterialButton forgotPassButton;
     private TextInputLayout emailInput;
     private TextInputLayout passwordInput;
     private AuthCallback callback;
@@ -68,11 +69,20 @@ public class LoginFragment extends Fragment {
                         login(); }
                     }
                 );
-        registerButton = (MaterialButton) view.findViewById(R.id.registerButton);
+        registerButton = view.findViewById(R.id.registerButton);
         registerButton.setOnClickListener(
                 new View.OnClickListener() {
                     public void onClick (View v) {
                         callback.registerFragment(); }
+                }
+        );
+        forgotPassButton = view.findViewById(R.id.forgetPassButton);
+        forgotPassButton.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        callback.resetPassFragment();
+                    }
                 }
         );
         return view;
