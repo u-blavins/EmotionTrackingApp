@@ -90,7 +90,8 @@ public class HomeFragment extends Fragment {
                                                 document.get("Date").toString(),
                                                 document.get("Time").toString(),
                                                 document.get("Thoughts").toString(),
-                                                document.getLong("Timestamp")
+                                                document.getLong("Timestamp"),
+                                                document.getString("Location")
                                         );
                                     entryList.add(entry);
                                     entries.add(entry);

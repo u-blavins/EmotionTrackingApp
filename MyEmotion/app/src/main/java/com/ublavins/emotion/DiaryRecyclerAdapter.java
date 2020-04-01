@@ -43,6 +43,7 @@ public class DiaryRecyclerAdapter extends RecyclerView.Adapter<DiaryRecyclerAdap
         holder.entryTime.setText(diaryEntry.getTime());
         holder.entryEmotion.setText(diaryEntry.getEmotion());
         holder.entryThoughts.setText(diaryEntry.getThoughts());
+        holder.entryLocation.setText(getLocation(diaryEntry.getLocation()));
 
         switch(diaryEntry.getEmotion()) {
             case "Okay":
@@ -72,8 +73,9 @@ public class DiaryRecyclerAdapter extends RecyclerView.Adapter<DiaryRecyclerAdap
         public ImageView entryImage;
         public TextView entryDate;
         public TextView entryTime;
-        public  TextView entryEmotion;
+        public TextView entryEmotion;
         public TextView entryThoughts;
+        public TextView entryLocation;
 
         public DiaryViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -82,6 +84,7 @@ public class DiaryRecyclerAdapter extends RecyclerView.Adapter<DiaryRecyclerAdap
             entryTime = itemView.findViewById(R.id.timeTextView);
             entryEmotion = itemView.findViewById(R.id.emotionTextView);
             entryThoughts = itemView.findViewById(R.id.thoughtsView);
+            entryLocation = itemView.findViewById(R.id.locationText);
             itemView.setOnClickListener(this);
         }
 
@@ -104,6 +107,14 @@ public class DiaryRecyclerAdapter extends RecyclerView.Adapter<DiaryRecyclerAdap
             );
         }
 
+    }
+
+    private String getLocation(String location) {
+        String loc = "N/A";
+        if (!location.isEmpty()) {
+            loc =  location;
+        }
+        return loc;
     }
 
 }

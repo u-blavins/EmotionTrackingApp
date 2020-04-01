@@ -8,10 +8,11 @@ public class DiaryEntry {
     private String entryTime;
     private String entryThoughts;
     private long entryTimestamp;
+    private String entryLocation;
 
     public DiaryEntry() {}
 
-    public DiaryEntry(String id, String emotion, int icon, String date, String time, String thoughts, long timestamp) {
+    public DiaryEntry(String id, String emotion, int icon, String date, String time, String thoughts, long timestamp, String location) {
         entryId = id;
         entryEmotion = emotion;
         entryEmojiIcon = icon;
@@ -19,6 +20,7 @@ public class DiaryEntry {
         entryTime = time;
         entryThoughts = thoughts;
         entryTimestamp = timestamp;
+        entryLocation = location;
     }
 
     public String getId() {
@@ -57,6 +59,10 @@ public class DiaryEntry {
         return entryThoughts;
     }
 
+    private void setLocation(String location) {
+        entryLocation = location;
+    }
+
     public void setThoughts(String thoughts) {
         entryThoughts = thoughts;
     }
@@ -76,4 +82,6 @@ public class DiaryEntry {
     public String getEmotion() {
         return entryEmotion;
     }
+
+    public String getLocation() {return entryLocation;}
 }
