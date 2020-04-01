@@ -3,6 +3,7 @@ package com.ublavins.emotion;
 import android.app.DatePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -36,7 +37,7 @@ public class ProfileFragment extends Fragment {
 
     private MaterialButton editProfile, saveProfile, deleteAccount;
     private TextInputEditText fname, lname, email, dob, gender;
-    private TextInputLayout fnameInput, lnameInput, emailInput, dobInput;
+    private TextInputLayout fnameInput, lnameInput, emailInput, dobInput, genderInput;
     private FirebaseAuth mAuth;
     private DocumentSnapshot docSnap;
     private String fnameStr, lnameStr, emailStr, dobStr, genderStr;
@@ -75,9 +76,15 @@ public class ProfileFragment extends Fragment {
         dob = view.findViewById(R.id.dobText);
         gender = view.findViewById(R.id.genderText);
         fnameInput = view.findViewById(R.id.fnameInputLayout);
+        fnameInput.setHintAnimationEnabled(false);
         lnameInput = view.findViewById(R.id.lnameInputLayout);
+        lnameInput.setHintAnimationEnabled(false);
         emailInput = view.findViewById(R.id.emailInputLayout);
+        emailInput.setHintAnimationEnabled(false);
         dobInput = view.findViewById(R.id.dobInputLayout);
+        dobInput.setHintAnimationEnabled(false);
+        genderInput = view.findViewById(R.id.genderInputLayout);
+        genderInput.setHintAnimationEnabled(false);
         editProfile = view.findViewById(R.id.editButton);
         saveProfile = view.findViewById(R.id.saveButton);
         deleteAccount = view.findViewById(R.id.deleteButton);

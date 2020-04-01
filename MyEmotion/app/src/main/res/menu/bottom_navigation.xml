@@ -3,13 +3,19 @@
 
     <item
         android:id="@+id/nav_home"
-        android:icon="@drawable/ic_home_black_24dp"
-        android:title="Home" />
+        android:icon="@drawable/ic_library_books_black_24dp"
+        android:title="Entries" />
+
+    <item
+        android:id="@+id/nav_add_entry"
+        android:icon="@drawable/ic_library_add_black_24dp"
+        android:title="Add Entry"
+        />
 
     <item
         android:id="@+id/nav_charts"
-        android:icon="@drawable/ic_insert_chart_black_24dp"
-        android:title="Charts" />
+        android:icon="@drawable/ic_timeline_black_24dp"
+        android:title="Stats" />
 
     <item
         android:id="@+id/nav_profile"

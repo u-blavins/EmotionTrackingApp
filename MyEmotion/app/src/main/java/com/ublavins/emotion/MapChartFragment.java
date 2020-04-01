@@ -33,6 +33,9 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.util.Arrays;
+import java.util.List;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -47,6 +50,7 @@ public class MapChartFragment extends Fragment implements OnMapReadyCallback,
     private MapView mapView;
     private FusedLocationProviderClient fusedLocationClient;
     private FirebaseFirestore db;
+    private List<String> EMOTIONS = Arrays.asList("Happy", "Okay", "Stress", "Sad", "Angry");
 
     public MapChartFragment() {
         // Required empty public constructor
@@ -84,11 +88,13 @@ public class MapChartFragment extends Fragment implements OnMapReadyCallback,
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 if (!document.get("Lat").toString().equals("") &&
                                 !document.get("Lon").toString().equals("")) {
-                                    setMarker(getMarker(
-                                            document.get("Lat").toString(),
-                                            document.get("Lon").toString(),
-                                            document.get("Emotion").toString()
-                                    ));
+                                    if (EMOTIONS.contains(document.getString("Emotion"))) {
+                                        setMarker(getMarker(
+                                                document.get("Lat").toString(),
+                                                document.get("Lon").toString(),
+                                                document.get("Emotion").toString()
+                                        ));
+                                    }
                                 }
                             }
                         }
@@ -180,8 +186,8 @@ public class MapChartFragment extends Fragment implements OnMapReadyCallback,
             case "Okay":
                 icon = R.drawable.okay;
                 break;
-            case "Neutral":
-                icon = R.drawable.neutral;
+            case "Stress":
+                icon = R.drawable.stress;
                 break;
             case "Sad":
                 icon = R.drawable.sad;

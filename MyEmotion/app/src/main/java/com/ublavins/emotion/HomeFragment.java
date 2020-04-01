@@ -6,7 +6,6 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -14,10 +13,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -30,7 +29,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class HomeFragment extends Fragment implements FragmentManager.OnBackStackChangedListener {
+public class HomeFragment extends Fragment {
 
     private FloatingActionButton addEntry;
     private RecyclerView diaryRecyclerView;
@@ -66,6 +65,7 @@ public class HomeFragment extends Fragment implements FragmentManager.OnBackStac
         diaryRecyclerView = view.findViewById(R.id.diaryRecyclerView);
         diaryRecyclerView.setHasFixedSize(true);
         emotionSpinner = view.findViewById(R.id.emotionSpinner);
+        emotionSpinner.setHintAnimationEnabled(false);
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(),
                 android.R.layout.simple_dropdown_item_1line, EMOTIONS);
         emotionSpinner.setAdapter(adapter);
@@ -85,6 +85,7 @@ public class HomeFragment extends Fragment implements FragmentManager.OnBackStac
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                     DiaryEntry entry = new DiaryEntry(
                                                 document.getId(),
+                                                document.getString("Emotion"),
                                                 getIcon(document.get("Emotion").toString()),
                                                 document.get("Date").toString(),
                                                 document.get("Time").toString(),
@@ -123,21 +124,13 @@ public class HomeFragment extends Fragment implements FragmentManager.OnBackStac
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        AddEntryFragment addEntryFrag = new AddEntryFragment();
-                        getFragmentManager().beginTransaction().replace(R.id.mainFragmentFrame,
-                                addEntryFrag).addToBackStack(null).commit();
+                        BottomNavigationView bottomNavigationView = getActivity().
+                                findViewById(R.id.mainNavBar);
+                        bottomNavigationView.setSelectedItemId(R.id.nav_add_entry);
                     }
                 }
         );
         return view;
-    }
-
-    @Override
-    public void onBackStackChanged() {
-//        HomeFragment homeFragment = new HomeFragment();
-//        getFragmentManager().beginTransaction().replace(R.id.mainFragmentFrame, homeFragment)
-//                .commit();
-        Toast.makeText(getContext(), "Test", Toast.LENGTH_SHORT).show();
     }
 
     private void filterEmotion(String emotion) {
@@ -167,8 +160,8 @@ public class HomeFragment extends Fragment implements FragmentManager.OnBackStac
             case "Okay":
                 icon = R.drawable.ic_okay;
                 break;
-            case "Neutral":
-                icon = R.drawable.ic_neutral;
+            case "Stress":
+                icon = R.drawable.ic_stress;
                 break;
             case "Sad":
                 icon = R.drawable.ic_sad;

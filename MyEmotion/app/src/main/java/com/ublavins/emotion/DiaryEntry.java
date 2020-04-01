@@ -2,6 +2,7 @@ package com.ublavins.emotion;
 
 public class DiaryEntry {
     private String entryId;
+    private String entryEmotion;
     private int entryEmojiIcon;
     private String entryDate;
     private String entryTime;
@@ -10,8 +11,9 @@ public class DiaryEntry {
 
     public DiaryEntry() {}
 
-    public DiaryEntry(String id, int icon, String date, String time, String thoughts, long timestamp) {
+    public DiaryEntry(String id, String emotion, int icon, String date, String time, String thoughts, long timestamp) {
         entryId = id;
+        entryEmotion = emotion;
         entryEmojiIcon = icon;
         entryDate = date;
         entryTime = time;
@@ -65,5 +67,13 @@ public class DiaryEntry {
 
     public void setEntryTimestamp(long timestamp) {
         entryTimestamp = timestamp;
+    }
+
+    public void setEmotion(String emotion) {
+        entryEmotion = emotion;
+    }
+
+    public String getEmotion() {
+        return entryEmotion;
     }
 }

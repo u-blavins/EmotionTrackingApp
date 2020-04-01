@@ -7,7 +7,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -103,6 +102,9 @@ public class MainActivity extends AppCompatActivity implements MainCallback {
                             case R.id.nav_home:
                                 homeFragment();
                                 break;
+                            case R.id.nav_add_entry:
+                                addEntryFragment();
+                                break;
                             case R.id.nav_charts:
                                 chartFragment();
                                 break;
@@ -121,6 +123,13 @@ public class MainActivity extends AppCompatActivity implements MainCallback {
         HomeFragment homeFrag = new HomeFragment();
         getSupportFragmentManager().beginTransaction().replace(R.id.mainFragmentFrame, homeFrag)
                 .addToBackStack(null).commit();
+    }
+
+    @Override
+    public void addEntryFragment() {
+        AddEntryFragment addEntryFragment = new AddEntryFragment();
+        getSupportFragmentManager().beginTransaction().replace(R.id.mainFragmentFrame,
+                addEntryFragment).addToBackStack(null).commit();
     }
 
     @Override

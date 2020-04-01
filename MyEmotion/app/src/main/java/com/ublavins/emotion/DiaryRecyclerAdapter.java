@@ -1,5 +1,6 @@
 package com.ublavins.emotion;
 
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,7 +18,6 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
-import java.util.Map;
 
 public class DiaryRecyclerAdapter extends RecyclerView.Adapter<DiaryRecyclerAdapter.DiaryViewHolder> {
     private ArrayList<DiaryEntry> diaryEntryList;
@@ -41,7 +41,26 @@ public class DiaryRecyclerAdapter extends RecyclerView.Adapter<DiaryRecyclerAdap
         holder.entryImage.setImageResource(diaryEntry.getIcon());
         holder.entryDate.setText(diaryEntry.getDate());
         holder.entryTime.setText(diaryEntry.getTime());
+        holder.entryEmotion.setText(diaryEntry.getEmotion());
         holder.entryThoughts.setText(diaryEntry.getThoughts());
+
+        switch(diaryEntry.getEmotion()) {
+            case "Okay":
+                holder.entryImage.setColorFilter(Color.parseColor("#999900"));
+                break;
+            case "Happy":
+                holder.entryImage.setColorFilter(Color.parseColor("#ff669900"));
+                break;
+            case "Sad":
+                holder.entryImage.setColorFilter(Color.parseColor("#ff0099cc"));
+                break;
+            case "Angry":
+                holder.entryImage.setColorFilter(Color.parseColor("#ffcc0000"));
+                break;
+
+        }
+
+
     }
 
     @Override
@@ -53,6 +72,7 @@ public class DiaryRecyclerAdapter extends RecyclerView.Adapter<DiaryRecyclerAdap
         public ImageView entryImage;
         public TextView entryDate;
         public TextView entryTime;
+        public  TextView entryEmotion;
         public TextView entryThoughts;
 
         public DiaryViewHolder(@NonNull View itemView) {
@@ -60,6 +80,7 @@ public class DiaryRecyclerAdapter extends RecyclerView.Adapter<DiaryRecyclerAdap
             entryImage = itemView.findViewById(R.id.imageView);
             entryDate = itemView.findViewById(R.id.dateTextView);
             entryTime = itemView.findViewById(R.id.timeTextView);
+            entryEmotion = itemView.findViewById(R.id.emotionTextView);
             entryThoughts = itemView.findViewById(R.id.thoughtsView);
             itemView.setOnClickListener(this);
         }
@@ -82,6 +103,7 @@ public class DiaryRecyclerAdapter extends RecyclerView.Adapter<DiaryRecyclerAdap
                     }
             );
         }
+
     }
 
 }

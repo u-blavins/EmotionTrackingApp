@@ -43,6 +43,36 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
+            android:id="@+id/emotionLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="5dp"
+            android:text="Emotion:"
+            android:textColor="@android:color/black"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@+id/imageView"
+            app:layout_constraintTop_toBottomOf="@+id/dateLabel" />
+
+        <TextView
+            android:id="@+id/thoughtsLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="5dp"
+            android:text="Thoughts:"
+            android:textColor="@android:color/black"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@+id/imageView"
+            app:layout_constraintTop_toBottomOf="@+id/emotionLabel" />
+
+        <TextView
             android:id="@+id/dateTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -86,17 +116,32 @@
             app:layout_constraintTop_toTopOf="parent"/>
 
         <TextView
+            android:id="@+id/emotionTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:text="Test"
+            android:textColor="@android:color/black"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@+id/emotionLabel"
+            app:layout_constraintTop_toTopOf="@+id/emotionLabel" />
+
+        <TextView
             android:id="@+id/thoughtsView"
-            android:layout_width="234dp"
-            android:layout_height="43dp"
-            android:layout_marginTop="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="5dp"
             android:text="TestThoughts"
             android:textColor="@android:color/black"
             android:textSize="16sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toEndOf="@+id/imageView"
-            app:layout_constraintTop_toBottomOf="@+id/dateLabel"
+            app:layout_constraintTop_toBottomOf="@+id/thoughtsLabel"
             app:layout_constraintVertical_bias="0.0" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

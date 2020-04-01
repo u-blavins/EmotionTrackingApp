@@ -20,7 +20,6 @@ import android.widget.CheckBox;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.SearchView;
-import android.widget.Toast;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -56,7 +55,7 @@ public class EntryFragment extends Fragment implements OnMapReadyCallback {
     private static final int REQUEST_LOCATION = 1;
     private DocumentSnapshot entry;
     private MaterialButton updateEntry, deleteEntry;
-    private CheckBox happyCheck, okayCheck, neutralCheck, sadCheck, angryCheck;
+    private CheckBox happyCheck, okayCheck, stressCheck, sadCheck, angryCheck;
     private TextInputEditText thoughtsText;
     private GoogleMap googleMap;
     private Marker marker;
@@ -98,7 +97,7 @@ public class EntryFragment extends Fragment implements OnMapReadyCallback {
         map.getMapAsync(this);
         happyCheck = view.findViewById(R.id.happyCheck);
         okayCheck = view.findViewById(R.id.okayCheck);
-        neutralCheck = view.findViewById(R.id.neutralCheck);
+        stressCheck = view.findViewById(R.id.neutralCheck);
         sadCheck = view.findViewById(R.id.sadCheck);
         angryCheck = view.findViewById(R.id.angryCheck);
         thoughtsText = view.findViewById(R.id.thoughtsText);
@@ -127,7 +126,7 @@ public class EntryFragment extends Fragment implements OnMapReadyCallback {
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        deleteEntry();
+                        delete();
                     }
                 }
         );
@@ -241,13 +240,31 @@ public class EntryFragment extends Fragment implements OnMapReadyCallback {
         boolean isValid = true;
         if (happyCheck.isChecked()) emotionStr = "Happy";
         if (okayCheck.isChecked()) emotionStr = "Okay";
-        if (neutralCheck.isChecked()) emotionStr = "Neutral";
+        if (stressCheck.isChecked()) emotionStr = "Neutral";
         if (sadCheck.isChecked()) emotionStr = "Sad";
         if (angryCheck.isChecked()) emotionStr = "Angry";
 
         if (emotionStr.equals("")) isValid = false;
 
         return isValid;
+    }
+
+    private void delete() {
+
+        if (!entry.getString("Photo").isEmpty()) {
+            StorageReference storageReference = FirebaseStorage.getInstance().getReference();
+            StorageReference photo = storageReference.child(entry.getString("Photo"));
+            photo.delete().addOnSuccessListener(
+                    new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                            deleteEntry();
+                        }
+                    }
+            );
+        } else {
+            deleteEntry();
+        }
     }
 
     private void deleteEntry() {
@@ -264,13 +281,15 @@ public class EntryFragment extends Fragment implements OnMapReadyCallback {
         );
     }
 
+
+
     private void setCheckboxes() {
         happyCheck.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (happyCheck.isChecked()) {
                     okayCheck.setChecked(false);
-                    neutralCheck.setChecked(false);
+                    stressCheck.setChecked(false);
                     sadCheck.setChecked(false);
                     angryCheck.setChecked(false);
                 }
@@ -281,16 +300,16 @@ public class EntryFragment extends Fragment implements OnMapReadyCallback {
             public void onClick(View view) {
                 if (okayCheck.isChecked()) {
                     happyCheck.setChecked(false);
-                    neutralCheck.setChecked(false);
+                    stressCheck.setChecked(false);
                     sadCheck.setChecked(false);
                     angryCheck.setChecked(false);
                 }
             }
         });
-        neutralCheck.setOnClickListener(new View.OnClickListener() {
+        stressCheck.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (neutralCheck.isChecked()) {
+                if (stressCheck.isChecked()) {
                     happyCheck.setChecked(false);
                     okayCheck.setChecked(false);
                     sadCheck.setChecked(false);
@@ -304,7 +323,7 @@ public class EntryFragment extends Fragment implements OnMapReadyCallback {
                 if (sadCheck.isChecked()) {
                     happyCheck.setChecked(false);
                     okayCheck.setChecked(false);
-                    neutralCheck.setChecked(false);
+                    stressCheck.setChecked(false);
                     angryCheck.setChecked(false);
                 }
             }
@@ -316,7 +335,7 @@ public class EntryFragment extends Fragment implements OnMapReadyCallback {
                     happyCheck.setChecked(false);
                     okayCheck.setChecked(false);
                     sadCheck.setChecked(false);
-                    neutralCheck.setChecked(false);
+                    stressCheck.setChecked(false);
                 }
             }
         });
@@ -332,7 +351,7 @@ public class EntryFragment extends Fragment implements OnMapReadyCallback {
                 okayCheck.setChecked(true);
                 break;
             case "Neutral":
-                neutralCheck.setChecked(true);
+                stressCheck.setChecked(true);
                 break;
             case "Sad":
                 sadCheck.setChecked(true);
@@ -389,19 +408,21 @@ public class EntryFragment extends Fragment implements OnMapReadyCallback {
 
     private void setPhoto() {
         if (entry.get("Photo") != null) {
-            StorageReference storageReference = FirebaseStorage.getInstance().getReference();
-            StorageReference photo = storageReference.child(entry.get("Photo").toString());
-            photo.getDownloadUrl().addOnSuccessListener(
-                    new OnSuccessListener<Uri>() {
-                        @Override
-                        public void onSuccess(Uri uri) {
-                            photoView.getLayoutParams().height = 800;
-                            photoView.getLayoutParams().width = 800;
-                            photoView.requestLayout();
-                            Picasso.get().load(uri).into(photoView);
+            if (!entry.getString("Photo").isEmpty()) {
+                StorageReference storageReference = FirebaseStorage.getInstance().getReference();
+                StorageReference photo = storageReference.child(entry.getString("Photo"));
+                photo.getDownloadUrl().addOnSuccessListener(
+                        new OnSuccessListener<Uri>() {
+                            @Override
+                            public void onSuccess(Uri uri) {
+                                photoView.getLayoutParams().height = 800;
+                                photoView.getLayoutParams().width = 800;
+                                photoView.requestLayout();
+                                Picasso.get().load(uri).into(photoView);
+                            }
                         }
-                    }
-            );
+                );
+            }
         }
     }
 }

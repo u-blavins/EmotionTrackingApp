@@ -40,6 +40,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputEditText;
@@ -73,6 +74,7 @@ public class AddEntryFragment extends Fragment implements OnMapReadyCallback {
     private static final int REQUEST_LOCATION = 1;
     private static final int REQUEST_IMAGE_CAPTURE = 100;
     private static final int REQUEST_IMAGE_PICK = 101;
+    private ImageView happyView, okayView, stressView, sadView, angryView;
     private MapView mapView;
     private GoogleMap googleMap;
     private Marker marker;
@@ -84,7 +86,7 @@ public class AddEntryFragment extends Fragment implements OnMapReadyCallback {
     private TextInputLayout thoughtsLayout;
     private TextInputEditText thoughtsText;
     private String emotion = "";
-    private CheckBox happyCheck, okayCheck, neutralCheck, sadCheck, angryCheck;
+    private CheckBox happyCheck, okayCheck, stressCheck, sadCheck, angryCheck;
     private FirebaseFirestore db;
     private FirebaseUser mUser;
     private FloatingActionButton addEntryButton;
@@ -117,9 +119,15 @@ public class AddEntryFragment extends Fragment implements OnMapReadyCallback {
         searchView = view.findViewById(R.id.mapSearch);
         currLocationButton = view.findViewById(R.id.currLocationButton);
         addEntryButton = view.findViewById(R.id.addEntryFloatingButton);
+        happyView = view.findViewById(R.id.happyImage);
+        okayView = view.findViewById(R.id.okayImage);
+        stressView = view.findViewById(R.id.stressImage);
+        sadView = view.findViewById(R.id.sadImage);
+        angryView = view.findViewById(R.id.angryImage);
+        setEmojiClick();
         happyCheck = view.findViewById(R.id.happyCheck);
         okayCheck = view.findViewById(R.id.okayCheck);
-        neutralCheck = view.findViewById(R.id.neutralCheck);
+        stressCheck = view.findViewById(R.id.stressCheck);
         sadCheck = view.findViewById(R.id.sadCheck);
         angryCheck = view.findViewById(R.id.angryCheck);
         setCheckboxes();
@@ -340,13 +348,76 @@ public class AddEntryFragment extends Fragment implements OnMapReadyCallback {
         }
     }
 
+    private void setEmojiClick() {
+        happyView.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        happyCheck.setChecked(true);
+                        okayCheck.setChecked(false);
+                        stressCheck.setChecked(false);
+                        sadCheck.setChecked(false);
+                        angryCheck.setChecked(false);
+                    }
+                }
+        );
+        okayView.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        okayCheck.setChecked(true);
+                        happyCheck.setChecked(false);
+                        stressCheck.setChecked(false);
+                        sadCheck.setChecked(false);
+                        angryCheck.setChecked(false);
+                    }
+                }
+        );
+        stressView.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        stressCheck.setChecked(true);
+                        happyCheck.setChecked(false);
+                        okayCheck.setChecked(false);
+                        sadCheck.setChecked(false);
+                        angryCheck.setChecked(false);
+                    }
+                }
+        );
+        sadView.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        sadCheck.setChecked(true);
+                        happyCheck.setChecked(false);
+                        okayCheck.setChecked(false);
+                        stressCheck.setChecked(false);
+                        angryCheck.setChecked(false);
+                    }
+                }
+        );
+        angryView.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        angryCheck.setChecked(true);
+                        happyCheck.setChecked(false);
+                        okayCheck.setChecked(false);
+                        sadCheck.setChecked(false);
+                        stressCheck.setChecked(false);
+                    }
+                }
+        );
+    }
+
     private void setCheckboxes() {
         happyCheck.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (happyCheck.isChecked()) {
                     okayCheck.setChecked(false);
-                    neutralCheck.setChecked(false);
+                    stressCheck.setChecked(false);
                     sadCheck.setChecked(false);
                     angryCheck.setChecked(false);
                 }
@@ -357,16 +428,16 @@ public class AddEntryFragment extends Fragment implements OnMapReadyCallback {
             public void onClick(View view) {
                 if (okayCheck.isChecked()) {
                     happyCheck.setChecked(false);
-                    neutralCheck.setChecked(false);
+                    stressCheck.setChecked(false);
                     sadCheck.setChecked(false);
                     angryCheck.setChecked(false);
                 }
             }
         });
-        neutralCheck.setOnClickListener(new View.OnClickListener() {
+        stressCheck.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (neutralCheck.isChecked()) {
+                if (stressCheck.isChecked()) {
                     happyCheck.setChecked(false);
                     okayCheck.setChecked(false);
                     sadCheck.setChecked(false);
@@ -380,7 +451,7 @@ public class AddEntryFragment extends Fragment implements OnMapReadyCallback {
                 if (sadCheck.isChecked()) {
                     happyCheck.setChecked(false);
                     okayCheck.setChecked(false);
-                    neutralCheck.setChecked(false);
+                    stressCheck.setChecked(false);
                     angryCheck.setChecked(false);
                 }
             }
@@ -392,7 +463,7 @@ public class AddEntryFragment extends Fragment implements OnMapReadyCallback {
                     happyCheck.setChecked(false);
                     okayCheck.setChecked(false);
                     sadCheck.setChecked(false);
-                    neutralCheck.setChecked(false);
+                    stressCheck.setChecked(false);
                 }
             }
         });
@@ -416,7 +487,7 @@ public class AddEntryFragment extends Fragment implements OnMapReadyCallback {
                 lon = String.valueOf(latLng.longitude);
             }
 
-            if (mStorageRef != null) {
+            if (mFilepath != null) {
                 imgUrl = "entries/" + mUser.getUid() + "/" + new Date().getTime() / 1000 + ".jpg";
                 storePhoto(imgUrl);
             }
@@ -437,6 +508,8 @@ public class AddEntryFragment extends Fragment implements OnMapReadyCallback {
                         @Override
                         public void onComplete(@NonNull Task<DocumentReference> task) {
                             if (task.isSuccessful()) {
+                                BottomNavigationView bottomNavBar = getActivity().findViewById(R.id.mainNavBar);
+                                bottomNavBar.setSelectedItemId(R.id.nav_home);
                                 makeToast("Added entry to diary");
                                 HomeFragment homeFragment = new HomeFragment();
                                 getFragmentManager().beginTransaction().replace(R.id.mainFragmentFrame,
@@ -458,7 +531,7 @@ public class AddEntryFragment extends Fragment implements OnMapReadyCallback {
 
         if (happyCheck.isChecked()) emotion = "Happy";
         if (okayCheck.isChecked()) emotion = "Okay";
-        if (neutralCheck.isChecked()) emotion = "Neutral";
+        if (stressCheck.isChecked()) emotion = "Stress";
         if (sadCheck.isChecked()) emotion = "Sad";
         if (angryCheck.isChecked()) emotion = "Angry";
 
