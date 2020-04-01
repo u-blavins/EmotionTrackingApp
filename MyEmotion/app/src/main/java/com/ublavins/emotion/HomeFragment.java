@@ -38,7 +38,7 @@ public class HomeFragment extends Fragment {
     private FirebaseFirestore db;
     private List<DiaryEntry> entries = new ArrayList<>();
     private MaterialSpinner emotionSpinner;
-    private static final String[] EMOTIONS = {"All", "Happy", "Okay", "Neutral", "Sad", "Angry"};
+    private static final String[] EMOTIONS = {"All", "Happy", "Okay", "Stress", "Sad", "Angry"};
     private boolean test = true;
 
     public HomeFragment() {
