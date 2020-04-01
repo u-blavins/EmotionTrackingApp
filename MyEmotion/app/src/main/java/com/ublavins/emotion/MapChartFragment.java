@@ -92,7 +92,8 @@ public class MapChartFragment extends Fragment implements OnMapReadyCallback,
                                         setMarker(getMarker(
                                                 document.get("Lat").toString(),
                                                 document.get("Lon").toString(),
-                                                document.get("Emotion").toString()
+                                                document.get("Emotion").toString(),
+                                                document.getString("Thoughts")
                                         ));
                                     }
                                 }
@@ -161,12 +162,14 @@ public class MapChartFragment extends Fragment implements OnMapReadyCallback,
         }
     }
 
-    private MarkerOptions getMarker(String lat, String lon, String emotion) {
+    private MarkerOptions getMarker(String lat, String lon, String emotion, String thoughts) {
         MarkerOptions marker = new MarkerOptions();
         marker.position(new LatLng(
                 Double.parseDouble(lat),
                 Double.parseDouble(lon)
         ));
+        marker.title(emotion);
+        marker.snippet(thoughts);
         marker.icon(getIcon(emotion));
         return marker;
     }
