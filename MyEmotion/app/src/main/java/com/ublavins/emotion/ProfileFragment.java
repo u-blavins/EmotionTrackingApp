@@ -34,7 +34,7 @@ import java.util.Calendar;
  */
 public class ProfileFragment extends Fragment {
 
-    private MaterialButton logout, editProfile, saveProfile, deleteAccount;
+    private MaterialButton editProfile, saveProfile, deleteAccount;
     private TextInputEditText fname, lname, email, dob, gender;
     private TextInputLayout fnameInput, lnameInput, emailInput, dobInput;
     private FirebaseAuth mAuth;
@@ -78,7 +78,6 @@ public class ProfileFragment extends Fragment {
         lnameInput = view.findViewById(R.id.lnameInputLayout);
         emailInput = view.findViewById(R.id.emailInputLayout);
         dobInput = view.findViewById(R.id.dobInputLayout);
-        logout = view.findViewById(R.id.logoutButton);
         editProfile = view.findViewById(R.id.editButton);
         saveProfile = view.findViewById(R.id.saveButton);
         deleteAccount = view.findViewById(R.id.deleteButton);
@@ -87,15 +86,6 @@ public class ProfileFragment extends Fragment {
         email.setText(emailStr);
         dob.setText(dobStr);
         gender.setText(genderStr);
-
-        logout.setOnClickListener(
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        logout();
-                    }
-                }
-        );
 
         deleteAccount.setOnClickListener(
                 new View.OnClickListener() {
@@ -197,6 +187,8 @@ public class ProfileFragment extends Fragment {
                                 email.setFocusableInTouchMode(false);
                                 dob.setFocusable(false);
                                 dob.setFocusableInTouchMode(false);
+                                gender.setFocusable(false);
+                                gender.setFocusableInTouchMode(false);
                                 saveProfile.setVisibility(View.INVISIBLE);
                                 editProfile.setVisibility(View.VISIBLE);
                             }
@@ -206,14 +198,6 @@ public class ProfileFragment extends Fragment {
         );
 
         return view;
-    }
-
-    private void logout() {
-        mAuth.signOut();
-        Intent intent = new Intent(getActivity(), AuthActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        startActivity(intent);
-        getActivity().finish();
     }
 
     private void getBirthDate() {

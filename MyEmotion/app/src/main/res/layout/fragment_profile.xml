@@ -19,7 +19,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.060000002">
+        app:layout_constraintVertical_bias="0.100000024">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/fnameText"
@@ -132,27 +132,6 @@
 <!--        app:layout_constraintVertical_bias="1.0"-->
 <!--        style="@style/Widget.MaterialComponents.FloatingActionButton"-->
 <!--        app:srcCompat="@drawable/ic_edit_black_24dp"/>-->
-
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/logoutButton"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="50dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="50dp"
-        android:backgroundTint="@color/colorPrimary"
-        android:padding="8dp"
-        android:text="@string/logout"
-        android:textAlignment="center"
-        android:textAppearance="@style/Widget.MaterialComponents.Button"
-        android:textColor="@color/white"
-        android:textSize="18sp"
-        app:cornerRadius="50dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/deleteButton"
-        app:layout_constraintVertical_bias="0.0" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/deleteButton"

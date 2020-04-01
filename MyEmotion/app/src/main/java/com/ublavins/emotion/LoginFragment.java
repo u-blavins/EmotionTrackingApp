@@ -62,6 +62,7 @@ public class LoginFragment extends Fragment {
         password = view.findViewById(R.id.passwordLogin);
         emailInput = view.findViewById(R.id.emailInputLayout);
         passwordInput = view.findViewById(R.id.passwordInputLayout);
+        passwordInput.setError(null);
         loginButton = view.findViewById(R.id.loginButton);
         loginButton.setOnClickListener(
                 new View.OnClickListener() {
