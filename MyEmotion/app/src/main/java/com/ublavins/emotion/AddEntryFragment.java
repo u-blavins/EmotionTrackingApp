@@ -59,6 +59,7 @@ import java.text.DateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import static android.app.Activity.RESULT_OK;
@@ -77,6 +78,7 @@ public class AddEntryFragment extends Fragment implements OnMapReadyCallback {
     private ImageView happyView, okayView, stressView, sadView, angryView;
     private MapView mapView;
     private GoogleMap googleMap;
+    private Geocoder geocoder;
     private Marker marker;
     private SearchView searchView;
     private ImageButton currLocationButton;
@@ -109,6 +111,7 @@ public class AddEntryFragment extends Fragment implements OnMapReadyCallback {
         db = FirebaseFirestore.getInstance();
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(getContext());
         mStorageRef = FirebaseStorage.getInstance().getReference();
+        geocoder = new Geocoder(getContext(), Locale.ENGLISH);
     }
 
     @Override
@@ -327,6 +330,7 @@ public class AddEntryFragment extends Fragment implements OnMapReadyCallback {
                         // Got last known location. In some rare situations this can be null.
                         if (location != null) {
                             LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
+                            loadLocation(latLng.latitude, latLng.longitude);
                             setMarker(new MarkerOptions().position(latLng).title("Current Location"));
                             googleMap.animateCamera(CameraUpdateFactory
                                     .newLatLngZoom(latLng, 18));
@@ -469,6 +473,17 @@ public class AddEntryFragment extends Fragment implements OnMapReadyCallback {
         });
     }
 
+    private void loadLocation(double lat, double lon) {
+        String address = "";
+        try {
+            address = geocoder.getFromLocation(lat, lon, 1
+            ).get(0).getAddressLine(0);
+            searchView.setQuery(address, false);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     private void addEntry() {
         if (validateEntry()) {
             Calendar now = Calendar.getInstance();
@@ -479,12 +494,20 @@ public class AddEntryFragment extends Fragment implements OnMapReadyCallback {
             String currentDate = DateFormat.getDateInstance(DateFormat.SHORT).format(now.getTime());
             String currentTime = DateFormat.getTimeInstance(DateFormat.SHORT).format(now.getTime());
             LatLng latLng;
+            String location = "";
             Map<String, Object> entry = new ArrayMap<String, Object>();
 
             if (marker != null) {
                 latLng = marker.getPosition();
                 lat = String.valueOf(latLng.latitude);
                 lon = String.valueOf(latLng.longitude);
+                try {
+                    location = geocoder.getFromLocation(
+                            latLng.latitude, latLng.longitude, 1).get(0).getAddressLine(0);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
             }
 
             if (mFilepath != null) {
@@ -500,6 +523,7 @@ public class AddEntryFragment extends Fragment implements OnMapReadyCallback {
             entry.put("Time", currentTime);
             entry.put("Timestamp", new Date().getTime() / 1000);
             entry.put("Photo", imgUrl);
+            entry.put("Location", location);
 
             db.collection("Entries")
                     .document(mUser.getUid()).collection("entry")

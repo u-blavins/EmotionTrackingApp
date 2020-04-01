@@ -43,6 +43,7 @@ import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Locale;
 
 
 /**
@@ -55,6 +56,7 @@ public class EntryFragment extends Fragment implements OnMapReadyCallback {
     private static final int REQUEST_LOCATION = 1;
     private DocumentSnapshot entry;
     private MaterialButton updateEntry, deleteEntry;
+    private ImageView happyView, okayView, stressView, sadView, angryView;
     private CheckBox happyCheck, okayCheck, stressCheck, sadCheck, angryCheck;
     private TextInputEditText thoughtsText;
     private GoogleMap googleMap;
@@ -67,6 +69,7 @@ public class EntryFragment extends Fragment implements OnMapReadyCallback {
     private FusedLocationProviderClient fusedLocationClient;
     private String emotionStr = "";
     private ImageView photoView;
+    private Geocoder geocoder;
 
     public EntryFragment(DocumentSnapshot documentSnapshot) {
         entry = documentSnapshot;
@@ -83,6 +86,7 @@ public class EntryFragment extends Fragment implements OnMapReadyCallback {
         mUser = FirebaseAuth.getInstance().getCurrentUser();
         db = FirebaseFirestore.getInstance();
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(getContext());
+        geocoder = new Geocoder(getContext(), Locale.ENGLISH);
     }
 
     @Override
@@ -95,9 +99,15 @@ public class EntryFragment extends Fragment implements OnMapReadyCallback {
         map.onCreate(savedInstanceState);
         map.onResume();
         map.getMapAsync(this);
+        happyView = view.findViewById(R.id.happyImage);
+        okayView = view.findViewById(R.id.okayImage);
+        stressView = view.findViewById(R.id.stressImage);
+        sadView = view.findViewById(R.id.sadImage);
+        angryView = view.findViewById(R.id.angryImage);
+        setEmojiClick();
         happyCheck = view.findViewById(R.id.happyCheck);
         okayCheck = view.findViewById(R.id.okayCheck);
-        stressCheck = view.findViewById(R.id.neutralCheck);
+        stressCheck = view.findViewById(R.id.stressCheck);
         sadCheck = view.findViewById(R.id.sadCheck);
         angryCheck = view.findViewById(R.id.angryCheck);
         thoughtsText = view.findViewById(R.id.thoughtsText);
@@ -106,6 +116,12 @@ public class EntryFragment extends Fragment implements OnMapReadyCallback {
         updateEntry = view.findViewById(R.id.updateEntryButton);
         deleteEntry = view.findViewById(R.id.deleteEntryButton);
         photoView = view.findViewById(R.id.photoView);
+        if (!entry.getString("Lat").isEmpty() && !entry.getString("Lon").isEmpty()) {
+            loadLocation(
+                    Double.parseDouble(entry.getString("Lat")),
+                    Double.parseDouble(entry.getString("Lon"))
+            );
+        }
         setPhoto();
         setCheck();
         setCheckboxes();
@@ -210,17 +226,35 @@ public class EntryFragment extends Fragment implements OnMapReadyCallback {
         }
     }
 
+    private void loadLocation(double lat, double lon) {
+        String address = "";
+        try {
+            address = geocoder.getFromLocation(lat, lon, 1
+            ).get(0).getAddressLine(0);
+            searchView.setQuery(address, false);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     private void updateEntry() {
         if (validateEntry()) {
             String thoughts = thoughtsText.getText().toString();
             String lat = "";
             String lon = "";
             LatLng latLng;
+            String location = "";
 
             if (marker != null) {
                 latLng = marker.getPosition();
                 lat = String.valueOf(latLng.latitude);
                 lon = String.valueOf(latLng.longitude);
+                try {
+                    location = geocoder.getFromLocation(latLng.latitude, latLng.longitude, 1
+                    ).get(0).getAddressLine(0);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
 
             db.collection("Entries").document(mUser.getUid())
@@ -228,7 +262,8 @@ public class EntryFragment extends Fragment implements OnMapReadyCallback {
                         "Emotion", emotionStr,
                         "Thoughts", thoughts,
                         "Lat", lat,
-                        "Lon", lon
+                        "Lon", lon,
+                    "Location", location
             );
             HomeFragment homeFragment = new HomeFragment();
             getFragmentManager().beginTransaction().replace(R.id.mainFragmentFrame, homeFragment)
@@ -240,7 +275,7 @@ public class EntryFragment extends Fragment implements OnMapReadyCallback {
         boolean isValid = true;
         if (happyCheck.isChecked()) emotionStr = "Happy";
         if (okayCheck.isChecked()) emotionStr = "Okay";
-        if (stressCheck.isChecked()) emotionStr = "Neutral";
+        if (stressCheck.isChecked()) emotionStr = "Stress";
         if (sadCheck.isChecked()) emotionStr = "Sad";
         if (angryCheck.isChecked()) emotionStr = "Angry";
 
@@ -281,7 +316,68 @@ public class EntryFragment extends Fragment implements OnMapReadyCallback {
         );
     }
 
-
+    private void setEmojiClick() {
+        happyView.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        happyCheck.setChecked(true);
+                        okayCheck.setChecked(false);
+                        stressCheck.setChecked(false);
+                        sadCheck.setChecked(false);
+                        angryCheck.setChecked(false);
+                    }
+                }
+        );
+        okayView.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        okayCheck.setChecked(true);
+                        happyCheck.setChecked(false);
+                        stressCheck.setChecked(false);
+                        sadCheck.setChecked(false);
+                        angryCheck.setChecked(false);
+                    }
+                }
+        );
+        stressView.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        stressCheck.setChecked(true);
+                        happyCheck.setChecked(false);
+                        okayCheck.setChecked(false);
+                        sadCheck.setChecked(false);
+                        angryCheck.setChecked(false);
+                    }
+                }
+        );
+        sadView.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        sadCheck.setChecked(true);
+                        happyCheck.setChecked(false);
+                        okayCheck.setChecked(false);
+                        stressCheck.setChecked(false);
+                        angryCheck.setChecked(false);
+                    }
+                }
+        );
+        angryView.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        angryCheck.setChecked(true);
+                        happyCheck.setChecked(false);
+                        okayCheck.setChecked(false);
+                        sadCheck.setChecked(false);
+                        stressCheck.setChecked(false);
+                    }
+                }
+        );
+    }
 
     private void setCheckboxes() {
         happyCheck.setOnClickListener(new View.OnClickListener() {
@@ -350,7 +446,7 @@ public class EntryFragment extends Fragment implements OnMapReadyCallback {
             case "Okay":
                 okayCheck.setChecked(true);
                 break;
-            case "Neutral":
+            case "Stress":
                 stressCheck.setChecked(true);
                 break;
             case "Sad":
@@ -389,6 +485,7 @@ public class EntryFragment extends Fragment implements OnMapReadyCallback {
                         // Got last known location. In some rare situations this can be null.
                         if (location != null) {
                             LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
+                            loadLocation(latLng.latitude, latLng.longitude);
                             setMarker(new MarkerOptions().position(latLng).title("Current Location"));
                             googleMap.animateCamera(CameraUpdateFactory
                                     .newLatLngZoom(latLng, 18));

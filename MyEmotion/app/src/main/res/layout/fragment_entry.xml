@@ -13,7 +13,7 @@
         tools:context=".EntryFragment">
 
         <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/neutralImage"
+            android:id="@+id/stressImage"
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:layout_marginTop="32dp"
@@ -21,7 +21,7 @@
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/okayImage"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_neutral" />
+            app:srcCompat="@drawable/ic_stress" />
 
         <TextView
             android:id="@+id/okayText"
@@ -35,15 +35,15 @@
             app:layout_constraintTop_toBottomOf="@+id/okayImage" />
 
         <TextView
-            android:id="@+id/neutralText"
+            android:id="@+id/stressText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
+            android:text="Stress"
             android:textSize="20sp"
-            android:text="Neutral"
-            app:layout_constraintEnd_toEndOf="@+id/neutralImage"
-            app:layout_constraintStart_toStartOf="@+id/neutralImage"
-            app:layout_constraintTop_toBottomOf="@+id/neutralImage" />
+            app:layout_constraintEnd_toEndOf="@+id/stressImage"
+            app:layout_constraintStart_toStartOf="@+id/stressImage"
+            app:layout_constraintTop_toBottomOf="@+id/stressImage" />
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/okayImage"
@@ -51,7 +51,7 @@
             android:layout_height="60dp"
             android:layout_marginTop="32dp"
             android:tint="#999900"
-            app:layout_constraintEnd_toStartOf="@+id/neutralImage"
+            app:layout_constraintEnd_toStartOf="@+id/stressImage"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/happyImage"
             app:layout_constraintTop_toTopOf="parent"
@@ -124,7 +124,7 @@
             android:tint="@android:color/holo_blue_dark"
             app:layout_constraintEnd_toStartOf="@+id/angryImage"
             app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/neutralImage"
+            app:layout_constraintStart_toEndOf="@+id/stressImage"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/ic_sad" />
 
@@ -153,16 +153,16 @@
             app:layout_constraintTop_toBottomOf="@+id/okayText" />
 
         <CheckBox
-            android:id="@+id/neutralCheck"
+            android:id="@+id/stressCheck"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
             android:buttonTint="@color/colorPrimary"
             android:scaleX="1.40"
             android:scaleY="1.40"
-            app:layout_constraintEnd_toEndOf="@+id/neutralText"
-            app:layout_constraintStart_toStartOf="@+id/neutralText"
-            app:layout_constraintTop_toBottomOf="@+id/neutralText" />
+            app:layout_constraintEnd_toEndOf="@+id/stressText"
+            app:layout_constraintStart_toStartOf="@+id/stressText"
+            app:layout_constraintTop_toBottomOf="@+id/stressText" />
 
         <CheckBox
             android:id="@+id/sadCheck"
@@ -201,7 +201,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/neutralCheck"
+            app:layout_constraintTop_toBottomOf="@+id/stressCheck"
             app:layout_constraintVertical_bias="0.0">
 
             <com.google.android.material.textfield.TextInputEditText
