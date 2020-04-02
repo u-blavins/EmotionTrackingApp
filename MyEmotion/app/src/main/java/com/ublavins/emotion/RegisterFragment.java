@@ -199,37 +199,49 @@ public class RegisterFragment extends Fragment {
         String emailText = email.getText().toString();
         String passText = password.getText().toString();
         String dateText = date.getText().toString();
-        String genderText;
+        String genderText = "";
 
-        if (fnameText.isEmpty()) {
-            fnameInput.setError("Field must not be empty");
-            isValid = false;
+        try {
+            genderText = gender.getSelectedItem().toString();
+        } catch (NullPointerException ex) {}
+
+        ValidateRegistration validate = new ValidateRegistration(
+                fnameText, lnameText, emailText, passText, dateText, genderText
+        );
+
+        if (!validate.validateFirstName().getCheck()) {
+            fnameInput.setError(validate.validateFirstName().getMessage());
+            isValid = validate.validateFirstName().getCheck();
         } else {
             fnameInput.setError(null);
         }
 
-        if (lnameText.isEmpty()) {
-            lnameInput.setError("Field must not be empty");
-            isValid = false;
+        if (!validate.validateLastName().getCheck()) {
+            lnameInput.setError(validate.validateLastName().getMessage());
+            isValid = validate.validateLastName().getCheck();
         } else {
             lnameInput.setError(null);
         }
 
-        if (emailText.isEmpty() || !Patterns.EMAIL_ADDRESS.matcher(emailText).matches()) {
-            emailInput.setError("Enter a valid email address");
-            isValid = false;
+        if (!validate.validateEmail().getCheck()) {
+            emailInput.setError(validate.validateEmail().getMessage());
+            isValid = validate.validateEmail().getCheck();
         } else {
             emailInput.setError(null);
         }
 
-        if (passText.isEmpty()) {
-            passwordInput.setError("Enter a password");
-            isValid = false;
-        } else if (passText.length() < 8) {
-            passwordInput.setError("Password must have a minimum length of 8 characters");
-            isValid = false;
+        if (!validate.validatePassword().getCheck()) {
+            passwordInput.setError(validate.validatePassword().getMessage());
+            isValid = validate.validatePassword().getCheck();
         } else {
             passwordInput.setError(null);
+        }
+
+        if (!validate.validateGender().getCheck()) {
+            gender.setError(validate.validateGender().getMessage());
+            isValid = validate.validateGender().getCheck();
+        } else {
+            gender.setError(null);
         }
 
         if (dateText.isEmpty()) {
@@ -239,12 +251,7 @@ public class RegisterFragment extends Fragment {
             dateInput.setError(null);
         }
 
-        try {
-            genderText = gender.getSelectedItem().toString();
-            gender.setError(null);
-        } catch (NullPointerException ex) {
-            gender.setError("Select a gender");
-        }
+
 
         if (!tos.isChecked()) {
             isValid = false;

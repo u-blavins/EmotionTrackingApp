@@ -132,7 +132,7 @@ public class ValidateRegistration {
         ValidationMessage validationMessage = new ValidationMessage(true, "");
         if (emailVal.isEmpty() || !Patterns.EMAIL_ADDRESS.matcher(emailVal).matches()) {
             validationMessage.setCheck(false);
-            validationMessage.setMessage("Field must not be empty");
+            validationMessage.setMessage("Enter a valid email");
         }
         return validationMessage;
     }
@@ -145,6 +145,24 @@ public class ValidateRegistration {
         } else if (passwordVal.length() < 8) {
             validationMessage.setCheck(false);
             validationMessage.setMessage("Password must have a minimum length of 8 characters");
+        }
+        return validationMessage;
+    }
+
+    public ValidationMessage validateDob() {
+        ValidationMessage validationMessage = new ValidationMessage(true, "");
+        if (dobVal.isEmpty()) {
+            validationMessage.setCheck(false);
+            validationMessage.setMessage("Enter a date");
+        }
+        return validationMessage;
+    }
+
+    public ValidationMessage validateGender() {
+        ValidationMessage validationMessage = new ValidationMessage(true, "");
+        if (genderVal.isEmpty()) {
+            validationMessage.setCheck(false);
+            validationMessage.setMessage("Select a gender");
         }
         return validationMessage;
     }

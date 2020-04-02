@@ -142,7 +142,7 @@ public class ValidateRegistrationTest {
         validateRegistration.setEmailVal(fakeEmail);
         ValidateRegistration.ValidationMessage sut = validateRegistration.validateEmail();
         assertFalse(sut.getCheck());
-        assertEquals("Field must not be empty", sut.getMessage());
+        assertEquals("Enter a valid email", sut.getMessage());
     }
 
     @Test
@@ -160,7 +160,8 @@ public class ValidateRegistrationTest {
         validateRegistration.setPasswordVal(fakePassword);
         ValidateRegistration.ValidationMessage sut = validateRegistration.validatePassword();
         assertFalse(sut.getCheck());
-        assertEquals("Password must have a minimum length of 8 characters", sut.getMessage());
+        assertEquals("Password must have a minimum length of 8 characters",
+                sut.getMessage());
     }
 
     @Test
@@ -168,6 +169,42 @@ public class ValidateRegistrationTest {
         String fakePassword = "Password";
         validateRegistration.setPasswordVal(fakePassword);
         ValidateRegistration.ValidationMessage sut = validateRegistration.validatePassword();
+        assertTrue(sut.getCheck());
+        assertEquals("", sut.getMessage());
+    }
+
+    @Test
+    public void validateEmptyDob() {
+        String fakeDob = "";
+        validateRegistration.setDobVal(fakeDob);
+        ValidateRegistration.ValidationMessage sut = validateRegistration.validateDob();
+        assertFalse(sut.getCheck());
+        assertEquals("Enter a date", sut.getMessage());
+    }
+
+    @Test
+    public void validateValidDob() {
+        String fakeDob = "01/01/01";
+        validateRegistration.setDobVal(fakeDob);
+        ValidateRegistration.ValidationMessage sut = validateRegistration.validateDob();
+        assertTrue(sut.getCheck());
+        assertEquals("", sut.getMessage());
+    }
+
+    @Test
+    public void validateEmptyGender() {
+        String fakeGender = "";
+        validateRegistration.setGenderVal(fakeGender);
+        ValidateRegistration.ValidationMessage sut = validateRegistration.validateGender();
+        assertFalse(sut.getCheck());
+        assertEquals("Select a gender", sut.getMessage());
+    }
+
+    @Test
+    public void validateValidGender() {
+        String fakeGender = "Male";
+        validateRegistration.setGenderVal(fakeGender);
+        ValidateRegistration.ValidationMessage sut = validateRegistration.validateGender();
         assertTrue(sut.getCheck());
         assertEquals("", sut.getMessage());
     }
