@@ -17,6 +17,7 @@ import android.widget.ArrayAdapter;
 
 import android.widget.CheckBox;
 import android.widget.DatePicker;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -52,6 +53,7 @@ public class RegisterFragment extends Fragment {
     private static final String[] GENDERS = {"Male", "Female", "Other"};
     private MaterialSpinner gender;
     private FirebaseAuth mAuth;
+    private ProgressBar progressBar;
 
     public RegisterFragment() {
         // Required empty public constructor
@@ -74,6 +76,7 @@ public class RegisterFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_register, container, false);
+        progressBar = view.findViewById(R.id.homeProgress);
         fnameInput = view.findViewById(R.id.fnameInputLayout);
         lnameInput = view.findViewById(R.id.lnameInputLayout);
         emailInput = view.findViewById(R.id.emailInputLayout);
@@ -139,6 +142,7 @@ public class RegisterFragment extends Fragment {
 
     public void register() {
         if (validateRegister()) {
+            progressBar.setVisibility(View.VISIBLE);
             String emailText = email.getText().toString();
             String passText = password.getText().toString();
             final Map<String, Object> user = new HashMap<>();
@@ -158,17 +162,21 @@ public class RegisterFragment extends Fragment {
                                     @Override
                                     public void onComplete(@NonNull Task<Void> task) {
                                         if (task.isSuccessful()) {
+                                            progressBar.invalidate();
+                                            progressBar.setVisibility(View.INVISIBLE);
                                             Intent intent = new Intent(getActivity(), MainActivity.class);
                                             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                             startActivity(intent);
                                             getActivity().finish();
                                         } else {
+                                            progressBar.setVisibility(View.INVISIBLE);
                                             makeToast("Error creating account");
                                         }
 
                                     }
                                 });
                             } else {
+                                progressBar.setVisibility(View.INVISIBLE);
                                 makeToast("Account already exists");
                             }
                         }

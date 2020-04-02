@@ -10,6 +10,7 @@ import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -37,6 +38,7 @@ public class LoginFragment extends Fragment {
     private AuthCallback callback;
     private FirebaseAuth mAuth;
     private TextInputEditText email, password;
+    private ProgressBar progressBar;
 
     public LoginFragment() {
         // Required empty public constructor
@@ -58,6 +60,7 @@ public class LoginFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_login, container, false);
+        progressBar = view.findViewById(R.id.homeProgress);
         email = view.findViewById(R.id.emailLogin);
         password = view.findViewById(R.id.passwordLogin);
         emailInput = view.findViewById(R.id.emailInputLayout);
@@ -90,6 +93,7 @@ public class LoginFragment extends Fragment {
 
     public void login() {
         if (validateLogin()) {
+            progressBar.setVisibility(View.VISIBLE);
             String emailText = email.getText().toString();
             String passText = password.getText().toString();
             mAuth.signInWithEmailAndPassword(emailText, passText)
@@ -97,12 +101,15 @@ public class LoginFragment extends Fragment {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if (task.isSuccessful()) {
+                                progressBar.invalidate();
+                                progressBar.setVisibility(View.INVISIBLE);
                                 // makeToast("User exists");
                                 Intent intent =  new Intent(getActivity(), MainActivity.class);
                                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                 startActivity(intent);
                                 getActivity().finish();
                             } else {
+                                progressBar.setVisibility(View.INVISIBLE);
                                 makeToast("User does not exist");
                             }
                         }
