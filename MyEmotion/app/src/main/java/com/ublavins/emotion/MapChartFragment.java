@@ -163,13 +163,12 @@ public class MapChartFragment extends Fragment implements OnMapReadyCallback,
     }
 
     private MarkerOptions getMarker(String lat, String lon, String emotion, String thoughts) {
-        MarkerOptions marker = new MarkerOptions();
-        marker.position(new LatLng(
-                Double.parseDouble(lat),
-                Double.parseDouble(lon)
-        ));
-        marker.title(emotion);
-        marker.snippet(thoughts);
+        EmotionMarker emotionMarker = new EmotionMarker();
+        emotionMarker.setLat(lat);
+        emotionMarker.setLon(lon);
+        emotionMarker.setEmotion(emotion);
+        emotionMarker.setThoughts(thoughts);
+        MarkerOptions marker = emotionMarker.getMarker();
         marker.icon(getIcon(emotion));
         return marker;
     }
