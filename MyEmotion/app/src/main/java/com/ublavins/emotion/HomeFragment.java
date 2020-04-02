@@ -47,7 +47,7 @@ public class HomeFragment extends Fragment {
     private ImageView noEntryImage;
     private TextView noEntryText;
     private static final String[] EMOTIONS = {"All", "Happy", "Okay", "Stress", "Sad", "Angry"};
-    private boolean test = true;
+    private boolean loaded = true;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -92,7 +92,7 @@ public class HomeFragment extends Fragment {
                     @RequiresApi(api = Build.VERSION_CODES.N)
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful() && test) {
+                        if (task.isSuccessful() && loaded) {
                             if (!task.getResult().isEmpty()) {
                                 for (QueryDocumentSnapshot document : task.getResult()) {
                                     DiaryEntry entry = new DiaryEntry(
@@ -113,13 +113,17 @@ public class HomeFragment extends Fragment {
                                 homeProgress.invalidate();
                                 homeProgress.setVisibility(View.INVISIBLE);
                                 emotionSpinner.setVisibility(View.VISIBLE);
-                                test = false;
+                                loaded = false;
                             } else {
                                 homeProgress.invalidate();
                                 homeProgress.setVisibility(View.INVISIBLE);
                                 noEntryImage.setVisibility(View.VISIBLE);
                                 noEntryText.setVisibility(View.VISIBLE);
                             }
+                        }
+                        if (!loaded) {
+                            homeProgress.invalidate();
+                            homeProgress.setVisibility(View.INVISIBLE);
                         }
                     }
                 }

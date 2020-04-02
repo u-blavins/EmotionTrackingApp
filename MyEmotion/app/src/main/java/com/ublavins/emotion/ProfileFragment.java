@@ -3,7 +3,6 @@ package com.ublavins.emotion;
 import android.app.DatePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.res.ColorStateList;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -154,6 +153,7 @@ public class ProfileFragment extends Fragment {
                             dob.setFocusableInTouchMode(true);
                             gender.setFocusable(true);
                             gender.setFocusableInTouchMode(true);
+                            Toast.makeText(getContext(), "Edit profile fields", Toast.LENGTH_SHORT).show();
                         }
                     }
                 }
@@ -185,6 +185,8 @@ public class ProfileFragment extends Fragment {
                                         "Email", email.getText().toString(),
                                         "Dob", dob.getText().toString()
                                 );
+
+                                Toast.makeText(getContext(), "Profile Updated", Toast.LENGTH_SHORT).show();
 
                                 fname.setFocusable(false);
                                 fname.setFocusableInTouchMode(false);
