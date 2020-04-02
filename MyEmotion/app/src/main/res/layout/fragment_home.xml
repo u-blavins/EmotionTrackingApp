@@ -6,6 +6,42 @@
     android:layout_height="match_parent"
     tools:context=".HomeFragment">
 
+    <ProgressBar
+        android:id="@+id/homeProgress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:visibility="invisible"
+        android:id="@+id/noEntryImage"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:src="@drawable/ic_happy"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.26999998" />
+
+    <TextView
+        android:visibility="invisible"
+        android:id="@+id/noEntryText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:textAlignment="center"
+        android:textSize="24sp"
+        android:text="Add a new entry"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/noEntryImage"
+        app:layout_constraintVertical_bias="0.0" />
+
     <com.tiper.MaterialSpinner
         android:id="@+id/emotionSpinner"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -13,6 +49,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:hint="Filter Emotion"
+        android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.95"
         app:layout_constraintStart_toStartOf="parent"

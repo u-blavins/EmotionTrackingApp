@@ -13,12 +13,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -38,6 +43,9 @@ public class HomeFragment extends Fragment {
     private FirebaseFirestore db;
     private List<DiaryEntry> entries = new ArrayList<>();
     private MaterialSpinner emotionSpinner;
+    private ProgressBar homeProgress;
+    private ImageView noEntryImage;
+    private TextView noEntryText;
     private static final String[] EMOTIONS = {"All", "Happy", "Okay", "Stress", "Sad", "Angry"};
     private boolean test = true;
 
@@ -64,6 +72,9 @@ public class HomeFragment extends Fragment {
         final ArrayList<DiaryEntry> entryList = new ArrayList<>();
         diaryRecyclerView = view.findViewById(R.id.diaryRecyclerView);
         diaryRecyclerView.setHasFixedSize(true);
+        homeProgress = view.findViewById(R.id.homeProgress);
+        noEntryImage = view.findViewById(R.id.noEntryImage);
+        noEntryText = view.findViewById(R.id.noEntryText);
         emotionSpinner = view.findViewById(R.id.emotionSpinner);
         emotionSpinner.setHintAnimationEnabled(false);
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(),
@@ -82,25 +93,33 @@ public class HomeFragment extends Fragment {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful() && test) {
-                            for (QueryDocumentSnapshot document : task.getResult()) {
+                            if (!task.getResult().isEmpty()) {
+                                for (QueryDocumentSnapshot document : task.getResult()) {
                                     DiaryEntry entry = new DiaryEntry(
-                                                document.getId(),
-                                                document.getString("Emotion"),
-                                                getIcon(document.get("Emotion").toString()),
-                                                document.get("Date").toString(),
-                                                document.get("Time").toString(),
-                                                document.get("Thoughts").toString(),
-                                                document.getLong("Timestamp"),
-                                                document.getString("Location")
-                                        );
+                                            document.getId(),
+                                            document.getString("Emotion"),
+                                            getIcon(document.get("Emotion").toString()),
+                                            document.get("Date").toString(),
+                                            document.get("Time").toString(),
+                                            document.get("Thoughts").toString(),
+                                            document.getLong("Timestamp"),
+                                            document.getString("Location")
+                                    );
                                     entryList.add(entry);
                                     entries.add(entry);
+                                }
+                                diaryRecyclerView.setLayoutManager(diaryLayoutManager);
+                                diaryRecyclerView.setAdapter(diaryAdapter);
+                                homeProgress.invalidate();
+                                homeProgress.setVisibility(View.INVISIBLE);
+                                emotionSpinner.setVisibility(View.VISIBLE);
+                                test = false;
+                            } else {
+                                homeProgress.invalidate();
+                                homeProgress.setVisibility(View.INVISIBLE);
+                                noEntryImage.setVisibility(View.VISIBLE);
+                                noEntryText.setVisibility(View.VISIBLE);
                             }
-                            diaryRecyclerView.setLayoutManager(diaryLayoutManager);
-                            diaryRecyclerView.setAdapter(diaryAdapter);
-                            test = false;
-                        } else {
-
                         }
                     }
                 }
